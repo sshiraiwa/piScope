@@ -38,7 +38,7 @@ import ifigure.widgets.canvas.custom_picker as cpicker
 import ifigure, os, ifigure.events
 from ifigure.utils.geom import scale_rect
 
-import cPickle as pickle
+import pickle as pickle
 import ifigure.utils.cbook as cbook
 from ifigure.widgets.undo_redo_history import GlobalHistory
 from ifigure.widgets.undo_redo_history import UndoRedoArtistProperty
@@ -964,7 +964,7 @@ class FigAxes(FigObj,  AdjustableRangeHolder):
         tsize = figpage.getp('title_size')        
 
 
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             # Don't use this!
             # use viewer.title whenever possible.
             dprint1('set_title is called with string argument. not recommendad')
@@ -1071,7 +1071,7 @@ class FigAxes(FigObj,  AdjustableRangeHolder):
     ### tick color
     def set_axtcolor(self, param, a):
         p = self.get_axis_param(param[0])
-        if isinstance(param[1], unicode):
+        if isinstance(param[1], str):
             p.tcolor = str(param[1])
         else:
             p.tcolor = param[1]
@@ -1085,7 +1085,7 @@ class FigAxes(FigObj,  AdjustableRangeHolder):
     ### tick/label color
     def set_axtlcolor(self, param, a):
         p = self.get_axis_param(param[0])
-        if isinstance(param[1], unicode):
+        if isinstance(param[1], str):
             p.tcolor = str(param[1][0])
         else:
             p.tcolor = param[1][0]
@@ -1266,7 +1266,7 @@ class FigAxes(FigObj,  AdjustableRangeHolder):
     def load_data(self, fid=None):
 #        print "loading  fig_axes data"        
         val=pickle.load(fid)
-        for key in val.keys():
+        for key in list(val.keys()):
            self.setp(key, val[key])
         #print "loading  fig_axes data", val        
         super(FigAxes, self).load_data(fid)
@@ -1286,7 +1286,7 @@ class FigAxes(FigObj,  AdjustableRangeHolder):
                     #print self.getp('title_labelinfo')
                     if 'title_labelinfo' in data['FigObj'][2]:
                          del data['FigObj'][2]['title_labelinfo']
-            for key in val.keys():
+            for key in list(val.keys()):
                  self.setp(key, val[key])
             if len(data['FigAxes']) > 2:
                 param = data['FigAxes'][2]
@@ -1760,11 +1760,11 @@ class FigAxes(FigObj,  AdjustableRangeHolder):
         self._set_3d_pane_color(self.get_3d_pane_colorcode())
 
     def get_3d_pane_colorname(self):
-        return zip(*self._3d_pane_color)[0]
+        return list(zip(*self._3d_pane_color))[0]
     def get_3d_pane_coloralpha(self):
-        return zip(*self._3d_pane_color)[1]
+        return list(zip(*self._3d_pane_color))[1]
     def get_3d_pane_colorcode(self):
-        return zip(*self._3d_pane_color)[2]
+        return list(zip(*self._3d_pane_color))[2]
 
     def _set_3d_pane_color(self, code):
         from ifigure.matplotlib_mod.axes_mod import AxesMod
@@ -1853,7 +1853,7 @@ class FigAxes(FigObj,  AdjustableRangeHolder):
 class FigInsetAxes(FigAxes):
     def __init__(self, *args, **kywds):
 #        self.child=[]
-        if kywds.has_key("draggable"): 
+        if "draggable" in kywds: 
             self.setvar("draggable", kywds["draggable"])
             del kywds["draggable"]
         else: self.setvar("draggable", True)

@@ -23,7 +23,7 @@
 #     Copyright(c) 2012- S. Shiraiwa
 #*******************************************
 
-import collections, weakref, sys, time, Queue
+import collections, weakref, sys, time, queue
 import ifigure.events
 from ifigure.widgets.var_viewerg2 import VarViewerGValue
 from ifigure.utils.cbook import SetText2Clipboard
@@ -49,8 +49,8 @@ class NamelistVVV(VarViewerGValue):
        text=self._path+',"'+key+'")'
        return text
    def OnCompareItems(self, t1, t2):
-       return (t1[0]._var0.keys().index(t1[1][0])-
-               t2[0]._var0.keys().index(t2[1][0]))
+       return (list(t1[0]._var0.keys()).index(t1[1][0])-
+               list(t2[0]._var0.keys()).index(t2[1][0]))
 
 class Namelist(PyContents):
    def __setitem__(self, key, value):
@@ -86,7 +86,7 @@ class Namelist(PyContents):
        if keylist is None:
             keylist = []
        pitem = item
-       for key in base.keys():
+       for key in list(base.keys()):
            tree.SetItemHasChildren(pitem)
            pitem2 = tree.AppendItem(pitem, key, img)
            vv_val =  self.get_varviewer_value(td, key)
@@ -118,7 +118,7 @@ class MatfileVVV(NamelistVVV):
 
 class MatData(dict):
     def __repr__(self):
-        dataname = ['  ' + x for x in self.keys() if not x.startswith('__')]
+        dataname = ['  ' + x for x in list(self.keys()) if not x.startswith('__')]
         return "Matlab (.mat) data (derived from dict class). \n" + '\n'.join(dataname)
 
 class Matfile(Namelist):
@@ -145,7 +145,7 @@ class IDLfileVVV(NamelistVVV):
 
 class IDLData(PyContents):
     def __repr__(self):
-        dataname = ['  ' + x for x in self.keys() if not x.startswith('__')]
+        dataname = ['  ' + x for x in list(self.keys()) if not x.startswith('__')]
         return "IDL (.sav) data (derived from dict class). \n" + '\n'.join(dataname)
 
 class IDLfile(Namelist):
@@ -188,7 +188,7 @@ class IDLfile(Namelist):
    def make_contents_branch(self, tree, td, pitem, d, img, 
                             keylist=None):
        if keylist is None: keylist = []
-       for key in d.keys():
+       for key in list(d.keys()):
            tree.SetItemHasChildren(pitem)
            pitem2 = tree.AppendItem(pitem, key, img)
            vv_val =  self.get_varviewer_value(td, keylist+[key])
@@ -210,7 +210,7 @@ class IDLfile(Namelist):
        for k in keylist:
           p = p[k]
 
-       var = {x: p[x] for x in p.keys() if not isinstance(p[x], IDLfile)}
+       var = {x: p[x] for x in list(p.keys()) if not isinstance(p[x], IDLfile)}
 
        note = {}
        val = IDLfileVVV(p._var0, note)
@@ -285,8 +285,8 @@ class MDSPlusTreeVVV(NamelistVVV):
        for key in klist[:-1]:
            p2 = p2[key]
 
-       return (p1.keys().index(t1[1][0][-1])-
-               p2.keys().index(t2[1][0][-1]))
+       return (list(p1.keys()).index(t1[1][0][-1])-
+               list(p2.keys()).index(t2[1][0][-1]))
    def tree_viewer_menu(self):
        if self.hasvar('mds_path'):
            return [("Show in MDSScope (1D)",  self.onScope1D, None),
@@ -393,7 +393,7 @@ class MDSPlusTree(Namelist):
    def make_contents_branch(self, tree, td, pitem, d, img, 
                             keylist=None):
        if keylist is None: keylist = []
-       for key in d.keys():
+       for key in list(d.keys()):
            tree.SetItemHasChildren(pitem)
            pitem2 = tree.AppendItem(pitem, key, img)
            vv_val =  self.get_varviewer_value(td, keylist+[key])
@@ -426,7 +426,7 @@ class MDSPlusTree(Namelist):
        return pydata[0].get_full_path()+'.get_contents("'+txt+'")'
 
    def get_info(self):
-       print('getting info', self.mds_path)
+       print(('getting info', self.mds_path))
 
    def eval(self, td, **kargs):
        return self.mds_eval(td, **kargs)
@@ -436,7 +436,7 @@ class MDSPlusTree(Namelist):
            key : 'value', 'dim0', 'dim1'
        '''
 #       import ifigure.utils.mdsplusr as mds
-       if debug: print('eval', key, self.mds_path)
+       if debug: print(('eval', key, self.mds_path))
  
 #       td = self._td()
        if key == "value":
@@ -471,7 +471,7 @@ class MDSPlusTree(Namelist):
        ana = MDSsession()
        job0 = MDSjob('connection_mode', server)
        ana.add_job([job0], 'connection_mode', idx=0)            
-       job1 = MDSjob('open', tree,  long(shot))
+       job1 = MDSjob('open', tree,  int(shot))
        ana.add_job([job1], 'connection')  
        ana.add_job([MDSjob('value', expr)], 'value')
 
@@ -522,8 +522,8 @@ class NETCDFfileVVV(NamelistVVV):
        for key in klist[:-1]:
            p2 = p2[key]
 
-       return (p1.keys().index(t1[1][0][-1])-
-               p2.keys().index(t2[1][0][-1]))
+       return (list(p1.keys()).index(t1[1][0][-1])-
+               list(p2.keys()).index(t2[1][0][-1]))
 
    def tree_viewer_menu(self):
        if self._content()._data_loaded:
@@ -639,7 +639,7 @@ class NETCDFfile(Namelist):
    def make_contents_branch(self, tree, td, pitem, img, 
                             keylist=None):
        if keylist is None: keylist = []
-       for key in self.keys():
+       for key in list(self.keys()):
            tree.SetItemHasChildren(pitem)
            pitem2 = tree.AppendItem(pitem, key, img)
            vv_val =  self[key].get_varviewer_value(td, keylist+[key])
@@ -711,7 +711,7 @@ class TSCInputFile(Namelist):
        if keylist is None:
             keylist = []
        pitem = item
-       for key in base.keys():
+       for key in list(base.keys()):
            tree.SetItemHasChildren(pitem)
            if 'name' in self[key]:
                extra = '('+self[key]['name']+')'

@@ -1,4 +1,4 @@
-import cPickle as pickle
+import pickle as pickle
 import select, time
 
 class PickledPipe(object):

@@ -33,7 +33,7 @@ class FigQuiver(FigObj, XUser, YUser, CUser):
         def set_hidden_vars(obj):
             return obj
 
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigObj.__new__(cls, *args, **kywds)
             obj = set_hidden_vars(obj)
             return obj
@@ -81,7 +81,7 @@ class FigQuiver(FigObj, XUser, YUser, CUser):
 
         self._pick_pos = None
         args = []
-        if not kywds.has_key('src'):
+        if 'src' not in kywds:
             kywds = self.getvar("kywds")
         super(FigQuiver,self).__init__(**kywds)
 
@@ -477,7 +477,7 @@ class FigQuiver3D(FigQuiver, ZUser):
         def set_hidden_vars(obj):
             return obj
 
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigObj.__new__(cls, *args, **kywds)
             obj = set_hidden_vars(obj)
             return obj
@@ -712,7 +712,7 @@ class FigQuiver3D(FigQuiver, ZUser):
         for a in self._artists:
             a.set_edgecolor(value)
             a._update_ec = True
-            print 'update_ec'
+            print('update_ec')
 
     def _update_artist(self):
         self.highlight_artist(False)

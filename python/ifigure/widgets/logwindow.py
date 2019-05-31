@@ -139,7 +139,7 @@ class Logwindow(wx.MiniFrame):
         ipage=self.nb.GetSelection()
         n = self.nb.GetPageCount()
         l = [True]*n
-        for ipage in reversed(range(n)):
+        for ipage in reversed(list(range(n))):
             p=self.nb.GetPage(ipage)
             keep = False
             for x in self.threadlist:

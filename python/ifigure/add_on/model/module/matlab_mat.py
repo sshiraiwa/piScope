@@ -59,7 +59,7 @@ def init(self, *args, **kargs):
     obj.mk_owndir()
     nm = Matfile(); nm['data'] = MatData()
     obj.setvar0(nm)
-    if not kargs.has_key('src'):
+    if 'src' not in kargs:
        self.onLoadFile(None)
     #self.onLoadFile()
 

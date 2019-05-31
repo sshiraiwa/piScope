@@ -37,7 +37,7 @@ class FigTriplot(FigObj, XUser, YUser, TrianglePlots):
             obj._objs=[]  ## for debug....     
             obj._data_extent=None
             return obj
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigObj.__new__(cls, *args, **kywds)
             obj = set_hidden_vars(obj)
             return obj
@@ -59,7 +59,7 @@ class FigTriplot(FigObj, XUser, YUser, TrianglePlots):
         obj = set_hidden_vars(obj)
         if (v["x"] is None and not isdynamic(v["y"])):
             v["x"] = np.arange(v["y"].shape[-1])
-        for name in v.keys(): obj.setvar(name, v[name])
+        for name in list(v.keys()): obj.setvar(name, v[name])
         obj.setvar("kywds", kywds) 
         obj.setvar("tri", tri) 
 
@@ -76,7 +76,7 @@ class FigTriplot(FigObj, XUser, YUser, TrianglePlots):
         YUser.__init__(self)
         TrianglePlots.__init__(self)   
         args = []
-        if not kywds.has_key('src'):
+        if 'src' not in kywds:
             kywds = self.getvar("kywds")
         super(FigTriplot,self).__init__(*args, **kywds)
 

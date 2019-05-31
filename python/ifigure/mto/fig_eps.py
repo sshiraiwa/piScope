@@ -100,17 +100,17 @@ class PdfFile_plus(PdfFile):
         self.writeFonts()
         self.writeObject(self.alphaStateObject,
                          dict([(val[0], val[1])
-                               for val in self.alphaStates.itervalues()]))
+                               for val in self.alphaStates.values()]))
         self.writeHatches()
         self.writeGouraudTriangles()
-        xobjects = dict(self.images.itervalues())
-        for tup in self.markers.itervalues():
+        xobjects = dict(iter(self.images.values()))
+        for tup in self.markers.values():
             xobjects[tup[0]] = tup[1]
-        for name, value in self.multi_byte_charprocs.iteritems():
+        for name, value in self.multi_byte_charprocs.items():
             xobjects[name] = value
         for name, path, trans, ob, join, cap, padding, filled, stroked in self.paths:
             xobjects[name] = ob
-        for tup in self.pdfs.itervalues():
+        for tup in self.pdfs.values():
             xobjects[tup[0]] = tup[1]
         self.writeObject(self.XObjectObject, xobjects)
         self.writeImages()
@@ -340,7 +340,7 @@ class FigureImageV(FigureImage):
             _eps_file = os.path.join(self._figobj().owndir(), self._eps_file)
             def ps_write(txt):
                 if unicode_file:                
-                    ps_write0(unicode(txt))
+                    ps_write0(str(txt))
                 else:
                     ps_write0(txt)
                 
@@ -424,7 +424,7 @@ class FigEPS(FigBox):
 #        file = '/Users/shiraiwa/piscope_src/example/images/cmod_logo_official_better_color.eps'
 
         self.setvar('org_epsfile', file)
-        if not kywds.has_key('src'):
+        if 'src' not in kywds:
             kywds = self.getvar("kywds")
             kywds['xy'] = self.getvar('xy')
         super(FigEPS,self).__init__(**kywds)
@@ -560,8 +560,8 @@ class FigEPS(FigBox):
         ox = self._eps_bbox[2] - self._eps_bbox[0]
         oy = self._eps_bbox[3] - self._eps_bbox[1]
 
-        dx = long(ox*float(value[2])/100.)
-        dy = long(oy*float(value[3])/100.)
+        dx = int(ox*float(value[2])/100.)
+        dy = int(oy*float(value[3])/100.)
         x1d, y1d=self.get_gp(0).get_device_point()
         self.get_gp(1).set_device_point(x1d+dx, y1d+dy)
         self.refresh_artist()
@@ -572,8 +572,8 @@ class FigEPS(FigBox):
         ix = self._image.shape[1]
         iy = self._image.shape[0]
 
-        dx = long(ox*float(self._image_scale_str[0])/100.)
-        dy = long(oy*float(self._image_scale_str[1])/100.)
+        dx = int(ox*float(self._image_scale_str[0])/100.)
+        dy = int(oy*float(self._image_scale_str[1])/100.)
         if (ix != dx or iy != dy):
            return (self._keep_aspect,
                    self._resize_mode,
@@ -608,7 +608,7 @@ class FigEPS(FigBox):
         else:
            new_size = (abs(x1d - x2d), abs(y1d-y2d))
 
-        new_size = [long(x) for x in new_size]
+        new_size = [int(x) for x in new_size]
         if (new_size[0] == self._image_size[0] and
             new_size[1] == self._image_size[1] and
             self._image is not None): return
@@ -618,7 +618,7 @@ class FigEPS(FigBox):
         src = os.path.join(wdir, self.getvar('epsfile'))
 
         params = []
-        params += ['-resize', str(long(new_size[0]))+'x'+str(long(new_size[1]))+'!']
+        params += ['-resize', str(int(new_size[0]))+'x'+str(int(new_size[1]))+'!']
         #print 'calling convert',  params
 
         app = self.get_root_parent().app

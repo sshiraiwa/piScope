@@ -18,7 +18,7 @@ import wx
 #
 
 import sys, shutil, os, tarfile, collections, logging, threading
-import cPickle as pickle
+import pickle as pickle
 
 from numpy import arange, sin, pi
 import ifigure
@@ -671,7 +671,7 @@ class ifigure_app(BookViewerFrame):
                rule = x['ext']
                p = re.compile(rule)
             except:
-               print('compile error of regular expression: ' + rule)
+               print(('compile error of regular expression: ' + rule))
             if p.match(basepath) is not None:
                 if not x['use']: continue
                 command = x['action']
@@ -1988,8 +1988,8 @@ class ifigure_app(BookViewerFrame):
         self.server_response_queue.put(response)
 
     def use_server(self):
-        import Queue
-        self.server_response_queue = Queue.Queue()
+        import queue
+        self.server_response_queue = queue.Queue()
         return self.server_response_queue
 
     def find_bookviewer(self, book):

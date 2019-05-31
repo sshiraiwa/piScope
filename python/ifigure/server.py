@@ -19,20 +19,20 @@
       
 '''
 
-import subprocess, shlex, time, cPickle, os
+import subprocess, shlex, time, pickle, os
 import sys
 import threading
 import socket
 import threading
-import SocketServer
+import socketserver
 import wx
 import ifigure.events, ifigure.interactive
 import binascii
 import logging, time
-import socket,subprocess,sys,shlex,cPickle
+import socket,subprocess,sys,shlex,pickle
 from ifigure.utils.cbook import pick_unused_port
 
-class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
+class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     def handle(self):
         import __main__
         while not __main__.process_server_request:
@@ -40,7 +40,7 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
         rfile = self.request.makefile('r')
         response = rfile.readline().strip()
         rfile.close()
-        data = cPickle.loads(binascii.a2b_hex(response))
+        data = pickle.loads(binascii.a2b_hex(response))
 #        data = self.request.recv(1024)
 #        data = cPickle.loads(binascii.a2b_hex(data))
         ifig_app = wx.GetApp().TopWindow
@@ -51,7 +51,7 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
                                               command=data)
         try:
             data = wx.GetApp().TopWindow.server_response_queue.get(True)
-            data = binascii.b2a_hex(cPickle.dumps(data))
+            data = binascii.b2a_hex(pickle.dumps(data))
             self.request.sendall(data)
         except:
             import traceback
@@ -59,7 +59,7 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
 
         ifig_app.remote_lock.release()
 
-class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
 
 class Server(object):
@@ -80,7 +80,7 @@ class Server(object):
           HOST = host
       PORT = pick_unused_port()
 
-      print(''.join(('starting server:', HOST,':', str(PORT))))
+      print((''.join(('starting server:', HOST,':', str(PORT)))))
       sys.stdout.flush()
       server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
       server.request_queue_size = 1
@@ -178,7 +178,7 @@ class Server(object):
 
        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
        sock.connect((self.rhost, self.rport))
-       data = binascii.b2a_hex(cPickle.dumps({'type':data_type, 'data':data}))
+       data = binascii.b2a_hex(pickle.dumps({'type':data_type, 'data':data}))
        sock.sendall(data+'\n')
        sock.close()
 

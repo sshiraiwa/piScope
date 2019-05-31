@@ -347,7 +347,7 @@ class DlgMdsSession(DialogWithWindowList):
 #            self.Freeze()
             new_name = str(dlg.GetValue())
             data, script = self.pages2data()
-            if new_name in  data.keys(): 
+            if new_name in  list(data.keys()): 
                 dlg.Destroy()
                 return
 #            len(data.keys())
@@ -360,7 +360,7 @@ class DlgMdsSession(DialogWithWindowList):
                 else:
                    self.nb.GetPage(i).set_syntax('none')
             p = self._new_stc(self.nb, '', syntax = 'none') 
-            self.nb.InsertPage(len(data.keys()), p, new_name, True)
+            self.nb.InsertPage(len(list(data.keys())), p, new_name, True)
             self.Bind(wx.stc.EVT_STC_MODIFIED, self.onModified, p)
 #            data[new_name] = ''
 #            self.data2pages(data)
@@ -402,7 +402,7 @@ class DlgMdsSession(DialogWithWindowList):
 #        self._selected_page = label
 
     def onClosePage(self, evt):
-        print 'onClose'
+        print('onClose')
         ipage = self.nb.GetSelection()
         label  = str(self.nb.GetPageText(ipage))
         if label.startswith('*'): label = label[1:]
@@ -579,7 +579,7 @@ class DlgMdsSession(DialogWithWindowList):
 
     def onEL_Changed(self, evt): 
         from ifigure.mdsplus.fig_mds import required_variables
-        print evt.widget_idx
+        print(evt.widget_idx)
         if evt.widget_idx == 0:
             plot_type = str(evt.elp.GetValue()[0])
             v = required_variables[plot_type]
@@ -621,7 +621,7 @@ class DlgMdsSession(DialogWithWindowList):
             p.SetText(txt)
 #            if not mod: p.SetSavePoint()
         except UnicodeDecodeError:
-            p.SetText(unicode(txt, errors='ignore'))
+            p.SetText(str(txt, errors='ignore'))
 #            if not mod: p.SetSavePoint()
         pass
 

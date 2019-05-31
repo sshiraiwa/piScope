@@ -31,7 +31,7 @@ callback = Index()
 axprev = plt.axes([0.7, 0.05, 0.1, 0.075])
 axnext = plt.axes([0.81, 0.05, 0.1, 0.075])
 bnext = Button(axnext, 'Next')
-bnext.on_clicked(callback.next)
+bnext.on_clicked(callback.__next__)
 bprev = Button(axprev, 'Previous')
 bprev.on_clicked(callback.prev)
 

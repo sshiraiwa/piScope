@@ -25,7 +25,7 @@ __maintainer__ = "Syun'ichi Shiraiwa"
 __email__ = "shiraiwa@psfc.mit.edu"
 __status__ = "beta"
 
-import wx, sys, time, weakref, logging, threading, Queue, os, shutil, numpy, traceback, collections
+import wx, sys, time, weakref, logging, threading, queue, os, shutil, numpy, traceback, collections
 import multiprocessing as mp
 #import wx.aui as aui
 import ifigure
@@ -79,7 +79,7 @@ class FakeBookViewerFrame(object):
         self._parent = ''
         self._status_txt = ['']*10
         self._print_status = True
-        if kargs.has_key("book"):
+        if "book" in kargs:
            self.book = kargs["book"]
            del kargs["book"]
  #          self.book.set_open(True)
@@ -89,13 +89,13 @@ class FakeBookViewerFrame(object):
 
     def SetTitle(self, title):
         self._title = title
-        print('title: ', title)
+        print(('title: ', title))
     def GetTitle(self):
         return self._title
     def SetStatusText(self, txt, idx):
         self._status_txt[idx] = txt
         if self._print_status:
-             print('status: ', txt)
+             print(('status: ', txt))
 
     def get_page(self, ipage=None):
         if ipage is None:
@@ -194,7 +194,7 @@ class MDSScopeNW(FakeBookViewerFrame,  ScopeEngine):
         self.startup_script = user_file
         dc = {}; dg = {}
         from ifigure.mdsplus.fig_mds import read_scriptfile
-        exec read_scriptfile(self.startup_script) in dg, dc
+        exec(read_scriptfile(self.startup_script), dg, dc)
         self.startup_values = dc
 
         self._start_mds_threads() # start session runner and event listener
@@ -266,7 +266,7 @@ class MDSScopeNW(FakeBookViewerFrame,  ScopeEngine):
         o_printstatus = self._print_status
         self._print_status = verbose
         if blocking:
-           m =  Queue.Queue()
+           m =  queue.Queue()
            set_call_after_queue(m)
         self._handle_apply_abort(allshot = allshot, 
                                  figaxes = figaxes, 

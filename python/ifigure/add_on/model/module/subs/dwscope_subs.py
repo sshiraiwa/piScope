@@ -61,25 +61,25 @@ def import_dwscope(file):
        print(line)
        arr=command.split('.')
        if len(arr)==3:
-          if not d.has_key(arr[1]):d[arr[1]]={}
+          if arr[1] not in d:d[arr[1]]={}
           d[arr[1]][arr[2]]=data
        if len(arr)==2:
-          if not d.has_key(arr[1]):d[arr[1]]={}
+          if arr[1] not in d:d[arr[1]]={}
           d[arr[1]]=data
 
     f.close()
 
-    num_c=long(d["columns"])
+    num_c=int(d["columns"])
     num_r=[0]*num_c
     return d
-    for i in range(num_c)+1:
+    for i in list(range(num_c))+1:
        key = 'rows_in_column_'+str(i)
-       num_r[i-1]=long(d[key])
+       num_r[i-1]=int(d[key])
 
     d2={"num_c": num_c, 
         "num_r": num_r}
 
-    for key in d.keys():
+    for key in list(d.keys()):
       if key[:4]=='plot':
           d2[key[5:]]=d[key]
       if key[:6]=='global':

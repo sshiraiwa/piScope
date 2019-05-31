@@ -1,5 +1,5 @@
 import os, sys, weakref, logging, threading
-import cPickle as pickle
+import pickle as pickle
 from ifigure.mto.treedict import TopTreeDict, TreeDict
 from ifigure.mto.py_code import PyParam, AbsModuleContainer, AbsScriptContainer, AbsFileContainer
 from ifigure.mto.py_code import PyModel
@@ -126,7 +126,7 @@ class ProjectTop(TopTreeDict, AbsScriptContainer, AbsFileContainer):
      def show_log(self):
          name = os.path.join(self.eval("wdir"), 'log')
          fid = open(name, 'r')
-         print(''.join(fid.readlines()))
+         print((''.join(fid.readlines())))
          fid.close()
           
      def tree_viewer_menu(self):
@@ -252,7 +252,7 @@ class ProjectTop(TopTreeDict, AbsScriptContainer, AbsFileContainer):
         logging.basicConfig(level=logging.DEBUG)
 
         root = self.get_root_parent()
-        exec root._name + ' = root'
+        exec(root._name + ' = root')
         if len(value[1])!=0:
          try:
               b = eval(value[1])
@@ -542,7 +542,7 @@ class ProjectTop(TopTreeDict, AbsScriptContainer, AbsFileContainer):
                  if (child.hasvar('subtree_path') and
                      os.path.exists(child.getvar('subtree_path'))):
                         path = child.getvar('subtree_path')
-                        print('exporting subtree to '+path)
+                        print(('exporting subtree to '+path))
                         child.save_subtree(path)
 
      def init_after_load(self, olist, nlist):
@@ -557,43 +557,43 @@ class ProjectTop(TopTreeDict, AbsScriptContainer, AbsFileContainer):
         #
         h2=self.getvar("load_property")
 
-        if h2.has_key("isetting"):
+        if "isetting" in h2:
            oid = h2["isetting"]
            self._psetting = self.resolve_olist_nlist_map(oid, olist, nlist)
-        if h2.has_key("imodel"):
+        if "imodel" in h2:
            oid = h2["imodel"]
            self._pmodel = self.resolve_olist_nlist_map(oid, olist, nlist)
-        if h2.has_key("isolver"):
+        if "isolver" in h2:
            oid = h2["isolver"]
            self._psolver = self.resolve_olist_nlist_map(oid, olist, nlist)
-        if h2.has_key("ibook"):
+        if "ibook" in h2:
            oid = h2["ibook"]
            self._pbook = self.resolve_olist_nlist_map(oid, olist, nlist)
-        if h2.has_key("isol"):
+        if "isol" in h2:
            oid = h2["isol"]
            self._psol = self.resolve_olist_nlist_map(oid, olist, nlist)
 
-        if h2.has_key("isetting_path"):
+        if "isetting_path" in h2:
            self._psetting = self.resolve_td_path(h2["isetting_path"])
-        if h2.has_key("imodel_path"):
+        if "imodel_path" in h2:
            self._pmodel = self.resolve_td_path(h2["imodel_path"])
-        if h2.has_key("isolver_path"):
+        if "isolver_path" in h2:
            self._psolver = self.resolve_td_path(h2["isolver_path"])
-        if h2.has_key("ibook_path"):
+        if "ibook_path" in h2:
            self._pbook = self.resolve_td_path(h2["ibook_path"])
-        if h2.has_key("isol_path"):
+        if "isol_path" in h2:
            self._psol = self.resolve_td_path(h2["isol_path"])
 
 
         self.delvar("load_property")
 
         if self._pbook is None:
-           print("??? self._pbook is None", "adjusting ...")
+           print(("??? self._pbook is None", "adjusting ..."))
            if self.num_book() == 0:
                self.onAddBook()
            else:
                for name, child in self.get_children():
                    if isinstance(child, FigBook):
                       self.set_pbook(child)
-           print(self._pbook)
+           print((self._pbook))
            

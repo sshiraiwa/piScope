@@ -46,14 +46,14 @@ class FigMdsData(FigMds):
                   code = compile(txt, '<string>', 'exec')
                   g = {}
                   l = {}
-                  exec code in viewer.g, ana.result
+                  exec(code, viewer.g, ana.result)
                except:
                   dprint1('error occured when processing data by script')
                   print('error occured when processing data by following script')
                   print('#####')
                   print(txt)
                   print('#####')
-                  print(traceback.format_exc())
+                  print((traceback.format_exc()))
                   self.get_child(ishot).set_suppress(True)
                   ana.postprocess_done = True
                   return

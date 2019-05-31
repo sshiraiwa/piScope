@@ -119,6 +119,6 @@ def help(*args):
            if f.__doc__ is not None:
                 print((f.__doc__))
            else:
-                print('help is not available for ' + f.__repr__())
+                print(('help is not available for ' + f.__repr__()))
        else:
            print(('help is not available for ', f))

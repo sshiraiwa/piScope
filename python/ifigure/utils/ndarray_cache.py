@@ -7,7 +7,7 @@ class NdArrayCache(object):
 
     def show(self):
         for key in NdArrayCache.cache.iterkeyrefs():
-            print(NdArrayCache.cache[key()])
+            print((NdArrayCache.cache[key()]))
 
     def store(self, t):
         if self.get_id(t) is not None:

@@ -68,7 +68,7 @@ class PyroSSH(object):
 #           logging.exception("nslookup failed")
 #           p.terminate()
 #           return None
-        print('killing process', p.pid)
+        print(('killing process', p.pid))
         p.terminate()
         p.kill()
         return uri
@@ -94,7 +94,7 @@ class PyroSSH(object):
            p = self.process[idx]
            self.process.remove(p)
            self.proxy.remove(proxy)
-           print('terminating process', p.pid)
+           print(('terminating process', p.pid))
            p.terminate()
            p.kill()
 
@@ -103,10 +103,10 @@ if __name__ == '__main__':
     c = PyroSSH()
     uri=c.nslookup('cmodws30.psfc.mit.edu', 'proxy_efit')
     print(uri)
-    print(uri.object)
+    print((uri.object))
 
     proxy=c.open_proxy(uri)
-    print(proxy.filename(shot=1120809022, time=1.0, prefix='k'))
-    print(proxy.run_minus_5(shot=1120809022, time=1.0))
+    print((proxy.filename(shot=1120809022, time=1.0, prefix='k')))
+    print((proxy.run_minus_5(shot=1120809022, time=1.0)))
     c.close_proxy(proxy)
 

@@ -26,7 +26,7 @@ class ShellVarViewerDropTarget(wx.TextDropTarget):
        self.obj = obj
 
     def OnDropText(self, x, y, indata):
-        print(type(indata))
+        print((type(indata)))
 
         ### this is ad-hoc....!
         app=self.obj.GetTopLevelParent()
@@ -35,7 +35,7 @@ class ShellVarViewerDropTarget(wx.TextDropTarget):
 
         data='='+str(indata)
         try:
-          print(str(indata))
+          print((str(indata)))
           obj=EvalNode(str(indata))
           #print obj
           if obj.isTreeDict():
@@ -322,7 +322,7 @@ class ShellVarViewer(wx.Panel):
 
     def onButton(self, evt, mode):
         from ifigure.ifigure_config import vv_scratch
-        import cPickle as pickle
+        import pickle as pickle
 
         idx = self.grid.GetSelectedRows()
         if len(idx)==0 and mode != 'paste':  return

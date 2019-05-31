@@ -2,7 +2,7 @@
 #   MDS worker pool for threaded worker and multiprocessing worker.
 #
 import multiprocessing as mp
-import time, weakref, threading, Queue
+import time, weakref, threading, queue
 import ifigure.utils.debug as debug
 debug.debug_default_level = 1
 dprint1, dprint2, dprint3 = debug.init_dprints('MDSMPWorkerPool')
@@ -35,7 +35,7 @@ class MDSWorkerPoolBase(object):
            v = self.results.get(True)
        except:
            import traceback
-           print(traceback.format_exc())
+           print((traceback.format_exc()))
            return None
        self.results.task_done()
        if not (isinstance(v, tuple) and len(v) == 3): return v
@@ -55,7 +55,7 @@ class MDSWorkerPoolBase(object):
                 ana_group[idx].set_result(result != None, result)
             except:
                 import traceback
-                print(traceback.format_exc())
+                print((traceback.format_exc()))
                 return None
             xxx[0] = xxx[0]-1
             if xxx[0] == 0:
@@ -82,7 +82,7 @@ class MDSWorkerPoolBase(object):
                ana_group = xxx[1]()
                ana_groups.append(ana_group)
                del MDSWorkerPoolBase.job_list[job_id]
-       print('cancelled jobs', ana_groups)
+       print(('cancelled jobs', ana_groups))
        return ana_groups
 
    def has_noresult(self):
@@ -152,8 +152,8 @@ class MDSTHWorkerPool(MDSWorkerPoolBase):
            host = None
            port = None
 
-       self.tasks = Queue.Queue()   
-       self.results= Queue.Queue()   
+       self.tasks = queue.Queue()   
+       self.results= queue.Queue()   
 
        self.workers = [None]*num
        for i in range(num):

@@ -45,7 +45,7 @@ __maintainer__ = "Syun'ichi Shiraiwa"
 __email__ = "shiraiwa@psfc.mit.edu"
 __status__ = "beta"
 
-import wx, sys, time, weakref, logging, threading, Queue, os, shutil, numpy, traceback, collections
+import wx, sys, time, weakref, logging, threading, queue, os, shutil, numpy, traceback, collections
 import multiprocessing as mp
 #import wx.aui as aui
 import ifigure
@@ -114,7 +114,7 @@ def print_threadoutput(txt):
 def start_mds_threads():
     if globals()['mds_thread'] is None:
        lock.acquire()
-       queue = Queue.Queue()   
+       queue = queue.Queue()   
        globals()['mds_thread'] = SessionRunner(queue)
        globals()['mds_thread'].start()
        lock.release()
@@ -161,7 +161,7 @@ class MDSWorkerPool(object):
                    self.w_type == w_type and
                    self.t_type == t_type): return
                num_worker = mds_num_worker
-               print('starting '+ str(num_worker) + ' ' + w_type +  ' workers')
+               print(('starting '+ str(num_worker) + ' ' + w_type +  ' workers'))
                kwargs = {'translater':t_type}
                if w_type == 'mp':
                     self.pool = MDSMPWorkerPool(num_worker, 
@@ -1054,8 +1054,8 @@ class ScopeEngine(object):
            try:
                txt = eval(txt[1:], globals(), self._shot_dict)
            except:
-               print('Failed to evaluate string', txt[1:])
-               print(traceback.format_exc())
+               print(('Failed to evaluate string', txt[1:]))
+               print((traceback.format_exc()))
                raise
         return txt
 
@@ -1185,7 +1185,7 @@ class MDSScope(BookViewerFrame, ScopeEngine):
         self.startup_script = user_file
         dc = {}; dg = {}
         from ifigure.mdsplus.fig_mds import read_scriptfile
-        exec read_scriptfile(self.startup_script) in dg, dc
+        exec(read_scriptfile(self.startup_script), dg, dc)
         self.startup_values = dc
 
         self._start_mds_threads() # start session runner and event listener
@@ -1200,7 +1200,7 @@ class MDSScope(BookViewerFrame, ScopeEngine):
         self.use_book_scope_param()
 
 
-        if len(bitmaps.keys()) == 0:
+        if len(list(bitmaps.keys())) == 0:
            for icon in bitmap_names:
               from ifigure.ifigure_config import icondir as path
               path=os.path.join(path, '16x16', icon)
@@ -1688,7 +1688,7 @@ class MDSScope(BookViewerFrame, ScopeEngine):
                for y in ax._yaxis:
                    y.ticks = ps[iax]['y.grid_lines']
            if 'global_defaults' in ps[iax]:
-               bit = long(ps[iax]['global_defaults'])
+               bit = int(ps[iax]['global_defaults'])
                if bit & 2**10 != 0: figmds._var_mask.append('x')
                if bit & 2**11 != 0: figmds._var_mask.append('y')
                # set grid
@@ -2253,7 +2253,7 @@ class MDSScope(BookViewerFrame, ScopeEngine):
                 p.setvar('group_id', gid)
                 p._status = 'group '+str(gid+1)
             ip = p.get_ichild()
-            for i in range(nump)-1:
+            for i in list(range(nump))-1:
                obj = self.book.load_subtree(fname, compress=False)
                obj.rename(obj.name + 'tmptmp')
                obj.setvar('group_id', gid)
@@ -2354,7 +2354,7 @@ class MDSScope(BookViewerFrame, ScopeEngine):
 #             w = None
 #             h = None
              for p in self.book.walk_page():
-                 p.set_figure_dpi(long(p.getp('dpi')*ratio))
+                 p.set_figure_dpi(int(p.getp('dpi')*ratio))
 #             self.canvas.show_spacer(w=0, h=0)
 #             self.canvas.full_screen(True)
              self.ShowFullScreen(True)
@@ -2381,7 +2381,7 @@ class MDSScope(BookViewerFrame, ScopeEngine):
         return vars
     def onMDSEvent(self, e):
         txt = str(self.txt_shot.GetValue())
-        print('MDS event', e.mdsevent_name, self)
+        print(('MDS event', e.mdsevent_name, self))
         self.check_valid_worker_type()
 
         if (txt.startswith('=') or
@@ -2404,7 +2404,7 @@ class MDSScope(BookViewerFrame, ScopeEngine):
         if self._mode == 'apply':
             mm = [x for x in self._figmds_list if x.get_figbook() is self.book]
             self._figmds_list = []
-            print('updating '+str(len(mm)) + ' panels')
+            print(('updating '+str(len(mm)) + ' panels'))
             self._handle_apply_abort(allshot=True, 
                                      figaxes = mm)
         else:
@@ -2549,7 +2549,7 @@ class MDSScope(BookViewerFrame, ScopeEngine):
         LoadData(False) : no blocking mode
         '''
         if blocking:
-           m =  Queue.Queue()
+           m =  queue.Queue()
            globals()['call_after_queue'] = m
         self._handle_apply_abort(allshot=allshot, figaxes=figaxes, do_apply=do_apply)
         if not blocking: return

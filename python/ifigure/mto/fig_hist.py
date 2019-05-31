@@ -52,7 +52,7 @@ class FigHist(FigObj, XUser, YUser, ZUser):
                 if not obj.hasvar(key): obj.setvar(key, default_kargs[key])
             return obj
 
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigObj.__new__(cls, *args, **kywds)
             obj = set_hidden_vars(obj)
             return obj
@@ -89,7 +89,7 @@ class FigHist(FigObj, XUser, YUser, ZUser):
         self._bins = None
         self._hit_a = None                    
         args = []
-        if not kywds.has_key('src'):
+        if 'src' not in kywds:
             kywds = self.getvar("kywds")
         super(FigHist,self).__init__(**kywds)
     @classmethod

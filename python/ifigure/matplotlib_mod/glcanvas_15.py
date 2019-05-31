@@ -81,13 +81,13 @@ class MyGLCanvas(glcanvas.GLCanvas):
             
 
     def gc_artist_data(self):
-        keys = self.artists_data.keys()
+        keys = list(self.artists_data.keys())
         for aa in keys:
             if aa.figobj is None:
                del self.artists_data[aa]
                del self.vbo[aa]               
             else:
-               keys2 = self.artists_data[aa].keys()  
+               keys2 = list(self.artists_data[aa].keys())  
                for a in keys2:
                   if hasattr(a, 'figobj') and a.figobj is None:
                       del self.artists_data[aa][a]
@@ -303,8 +303,8 @@ class MyGLCanvas(glcanvas.GLCanvas):
         iNumSamples = (GLint * 1)()               
         glGetIntegerv(GL_SAMPLE_BUFFERS, iMultiSample)
         glGetIntegerv(GL_SAMPLES, iNumSamples)
-        print("MSAA on, GL_SAMPLE_BUFFERS ",  np.array(iMultiSample),
-              " ", np.array(iNumSamples))
+        print(("MSAA on, GL_SAMPLE_BUFFERS ",  np.array(iMultiSample),
+              " ", np.array(iNumSamples)))
 
     def setLineWidth(self, l):
         self.set_uniform(glUniform1f,  'uLineWidth', l)
@@ -789,7 +789,7 @@ class MyGLCanvas(glcanvas.GLCanvas):
                     m = getattr(self, 'draw_'+ data[0])
                     m(xxx[k], *data[1], **data[2])
                 self.vbo[aa][a] = xxx
-                id_dict[long(current_id)] = weakref.ref(a)
+                id_dict[int(current_id)] = weakref.ref(a)
                 current_id = current_id + 1
         #glFinish()                
         return id_dict, need_oit
@@ -1034,22 +1034,22 @@ class MyGLCanvas(glcanvas.GLCanvas):
             pixel_buffers = glGenBuffers(2)
             size = wim*him
             
-    	    glBindBuffer(GL_PIXEL_PACK_BUFFER, pixel_buffers[0])
-	    glBufferData(GL_PIXEL_PACK_BUFFER, size*4, None, GL_STREAM_READ)
+            glBindBuffer(GL_PIXEL_PACK_BUFFER, pixel_buffers[0])
+            glBufferData(GL_PIXEL_PACK_BUFFER, size*4, None, GL_STREAM_READ)
 
             glReadPixels(0,0, wim, him, GL_RGBA, GL_UNSIGNED_BYTE, c_void_p(0))
-   	    data2 = string_at(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY), size*4)
+            data2 = string_at(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY), size*4)
             idmap = (np.fromstring(data2, np.uint8).reshape(him, wim, -1))#*255.
             idmap2 = idmap[:,:,2] + idmap[:,:,3]*256
             idmap0 = idmap[:,:,0] + idmap[:,:,1]*256
             glUnmapBuffer(GL_PIXEL_PACK_BUFFER)
             glBindBuffer(GL_PIXEL_PACK_BUFFER, 0)
             
-    	    glBindBuffer(GL_PIXEL_PACK_BUFFER, pixel_buffers[1])
-	    glBufferData(GL_PIXEL_PACK_BUFFER, size*4, None, GL_STREAM_READ)
+            glBindBuffer(GL_PIXEL_PACK_BUFFER, pixel_buffers[1])
+            glBufferData(GL_PIXEL_PACK_BUFFER, size*4, None, GL_STREAM_READ)
             glReadPixels(0,0, wim, him, GL_DEPTH_COMPONENT,GL_FLOAT, c_void_p(0))
 
-   	    data3 = string_at(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY), size*4)
+            data3 = string_at(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY), size*4)
             depth = np.fromstring(data3, np.float32).reshape(him, wim)
             
             glUnmapBuffer(GL_PIXEL_PACK_BUFFER)
@@ -1771,7 +1771,7 @@ class MyGLCanvas(glcanvas.GLCanvas):
             if len(edgecolor) == np.sum(counts):
                 col = edgecolor
             else:
-                print edgecolor.shape, counts
+                print(edgecolor.shape, counts)
                 assert False, "edge color length is wrong"
             col = np.hstack(col).astype(np.float32) 
             if vbos['ec'] is None:
@@ -2198,7 +2198,7 @@ class MyGLCanvas(glcanvas.GLCanvas):
         target = self.get_container(a)
         box = trans.transform([frame_range[0:2], frame_range[2:4]])
         d = box[1] - box[0]
-        w, h = long(d[0])*multisample, long(d[1])*multisample
+        w, h = int(d[0])*multisample, int(d[1])*multisample
         make_new = False
 
         if target in self.frame_list:

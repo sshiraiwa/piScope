@@ -69,7 +69,7 @@ def _getitem_(self, key):
 
 def dim_of(self, num=0):
     print(self)
-    print(self.td)
+    print((self.td))
     node=self.td.getvar("node")
     txt='dim_of('+node.strip()+','+str(num)+')'
     return self.call_mdsvalue(txt)
@@ -91,14 +91,14 @@ def call_mdsvalue(self, str):
    port=parent.getvar("port")
    mds.port=port
    mds.server=server
-   print(tree, shot, port, server, str)
+   print((tree, shot, port, server, str))
    try:
        res=mds.open(tree, shot)
        print(res)
        return mds.value(str)  
    except Exception:
        print("!!!!!! Error in evaluating the following node  !!!!!!")
-       print("TREE/SHOT", tree, shot)
-       print("NODE", str)
-       print(sys.exc_info())
+       print(("TREE/SHOT", tree, shot))
+       print(("NODE", str))
+       print((sys.exc_info()))
    return None

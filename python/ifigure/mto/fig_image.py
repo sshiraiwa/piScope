@@ -63,7 +63,7 @@ class FigImage(FigObj, XUser, YUser, ZUser, CUser):
             return obj
 
 
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigObj.__new__(cls, *args, **kywds)
             obj = set_hidden_vars(obj)
             return obj
@@ -107,7 +107,7 @@ class FigImage(FigObj, XUser, YUser, ZUser, CUser):
         self._pick_pos = None
         self._cb_added = False
         args = []
-        if not kywds.has_key('src'):
+        if 'src' not in kywds:
             kywds = self.getvar("kywds")
         super(FigImage,self).__init__(**kywds)
 
@@ -596,11 +596,11 @@ class FigImage(FigObj, XUser, YUser, ZUser, CUser):
             dy = np.floor(p1[1]-p0[1])+2
             xp = idtrans(
                 np.transpose(
-                np.vstack((np.floor(p0[0])+np.arange(long(dx)),
+                np.vstack((np.floor(p0[0])+np.arange(int(dx)),
                            np.linspace(p0[0], p1[0], dx)))))[:,0]
             yp = idtrans(
                 np.transpose(
-                np.vstack((np.floor(p0[1])-1+np.zeros(long(dy)),
+                np.vstack((np.floor(p0[1])-1+np.zeros(int(dy)),
                            np.linspace(p0[1], p1[1], dy)))))[:,1]
 
             # eliminate points outside the data range

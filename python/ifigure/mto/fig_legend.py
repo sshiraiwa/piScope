@@ -41,11 +41,11 @@ class FigLegend(FigObjGPHolder):
         '''
 
         self._objs=[]  ## for debug....        
-        if kywds.has_key("draggable"): 
+        if "draggable" in kywds: 
             self.setvar("draggable", kywds["draggable"])
             del kywds["draggable"]
         else: self.setvar("draggable", False)
-        if kywds.has_key("container_idx"): 
+        if "container_idx" in kywds: 
             self._container_idx = kywds["container_idx"]
             del kywds["container_idx"]
         else: self._container_idx = 0
@@ -458,7 +458,7 @@ class FigLegend(FigObjGPHolder):
             idx = self._artists[0].get_texts().index(self._hit_a)
         else:
             idx = -1
-        return idx, idxlabel, zip(labels, colors)
+        return idx, idxlabel, list(zip(labels, colors))
 
     def set_legendentry(self, value, a):
         idx = value[0]
@@ -581,7 +581,7 @@ class FigLegend(FigObjGPHolder):
         if tab == 'label1':
            idx = 0
         else:
-           idx = long(tab)-1
+           idx = int(tab)-1
         return idx
     def _get_texts(self):
         if len(self._artists)==0: return []

@@ -14,7 +14,7 @@
 #            0.7 8/30/12 keyborad interupt 
 #
 import collections, weakref, os, logging, wx, threading, types, shutil, multiprocessing, sys, traceback
-import cPickle as pickle
+import pickle as pickle
 from  ifigure.mto.py_code import PyCode
 import ifigure.utils.cbook as cbook
 import ifigure, ifigure.events
@@ -65,7 +65,7 @@ class AnsHolder(object):
     def RunA(self, *args, **kargs):
         self.Run(*args, **kargs)
         if 'ans' in kargs:
-           obj = kargs['ans'].func_defaults[1]
+           obj = kargs['ans'].__defaults__[1]
         else:
            obj = self
         val =  obj._ans
@@ -133,7 +133,7 @@ class AbsScript(object):
           self._debug = 0  ### make sure that next time will run in normal mode
           try:
               if debug == 0:
-                  exec self._script_co in lc, lc 
+                  exec(self._script_co, lc, lc) 
               elif debug == 1:
                   import pdb
                   pdb.run(self._script_co, lc, lc )
@@ -143,11 +143,11 @@ class AbsScript(object):
           except ExitScript:
               return True
           except ScriptStop as e:
-              print('Script execution stops : ', e.message)
+              print(('Script execution stops : ', e.message))
               return False
           except Exception:
               print('script exectuion failed')
-              print(traceback.format_exc())
+              print((traceback.format_exc()))
               return False
               #logging.exception("Script Execution Failed")
           return True
@@ -166,8 +166,8 @@ class AbsScript(object):
             self._script_co = None
             self._script_mtime = -1
 
-            print('Failed to compile script '+file)
-            print(traceback.format_exc())
+            print(('Failed to compile script '+file))
+            print((traceback.format_exc()))
 
 
 
@@ -703,7 +703,7 @@ class PyScript(PyCode, FileHolder, AnsHolder):
            obj.add_child(path[-1], script) 
            fpath = os.path.join(script.owndir(), path[-1]+'.py')
            script.set_path_pathmode(fpath)
-           print('creating...', script)
+           print(('creating...', script))
            ifigure.events.SendChangedEvent(script, w=wx.GetApp().TopWindow)
         return script
 
@@ -719,7 +719,7 @@ class PyScript(PyCode, FileHolder, AnsHolder):
         sol_list = self._make_list2([], proj.find_by_full_path(base_sol))
         for sol, src_name in sol_list:
             script = self._find_script_in_sol(sol, src_name)
-            print('running...', script.get_full_path())# value
+            print(('running...', script.get_full_path()))# value
             if value[4]:
                 wx.CallAfter(script.do_run_t, None, *(value[2][1]), **(value[3][1]))
             else:
@@ -757,7 +757,7 @@ class PyScript(PyCode, FileHolder, AnsHolder):
         src_file = FileHolder.path2fullpath(self)
         for sol, src_name in sol_list:
             script = self._find_script_in_sol(sol, src_name)
-            print('updating...', script)
+            print(('updating...', script))
             dest_file = FileHolder.path2fullpath(script)
             shutil.copyfile(src_file, dest_file)
 

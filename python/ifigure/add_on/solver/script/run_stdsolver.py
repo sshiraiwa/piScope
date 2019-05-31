@@ -5,7 +5,7 @@
 #   and the thread submit a job, which is started
 #   in a main thread.
 #
-import Queue, threading, weakref, wx
+import queue, threading, weakref, wx
 renew_model_each_time = True
 solver = obj.get_parent()
 tmodel = solver._model
@@ -36,14 +36,14 @@ def run_workers(workers, sol):
         queue.put(w)
         solver._queue = None
 
-    q = Queue.Queue()
+    q = queue.Queue()
     solver._queue = q
     wx.CallAfter(submit, *(w, q))
     while True:
         try:
            t = q.get(True)
            break
-        except Queue.Empty:
+        except queue.Empty:
            solver._queue = None
            print('Failed to get response')
            return

@@ -1033,7 +1033,7 @@ def view(*args, **kwargs):
           view('ortho')
           view('updown')
     '''
-    if len(args) == 0 and len(kwargs.keys()) == 0:
+    if len(args) == 0 and len(list(kwargs.keys())) == 0:
         v = aviewer
         return v.view()
     else:
@@ -1313,7 +1313,7 @@ def video(*args, **kargs):
        x = args[1]
        y = args[2]
     else:
-       raise(ValueError('data dimension is not right'))
+       raise ValueError
 
     v = videoviewer()
     o = v.image(*args, **kargs)
@@ -1410,7 +1410,7 @@ def profile_stop(pr, sortby='cumulative'):
              'ncalls', pcalls', 'line', 'name',
              'nfl', stdname', 'time', 'tottime'
     '''
-    import StringIO, pstats
+    import io, pstats
     pr.disable()
     #print 'stopped profiler'
     lsortby = ['cumulative', 'calls', 'cumtime', 
@@ -1422,7 +1422,7 @@ def profile_stop(pr, sortby='cumulative'):
        print(lsortby)
        return
 
-    s = StringIO.StringIO()
+    s = io.StringIO()
     sortby = sortby
     ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
     ps.print_stats()
@@ -1454,7 +1454,7 @@ def importv(dest=None, path = ''):
     import variables which was saved as pickled file
 
     '''
-    import cPickle as pickle 
+    import pickle as pickle 
     from ifigure.mto.py_code import PyData
     if dest is None:
        from __main__ import ifig_app
@@ -1489,7 +1489,7 @@ def exportv(variables, names, path = ''):
           or export subtree.
 
     '''
-    import cPickle as pickle
+    import pickle as pickle
     save_dlg = wx.FileDialog ( None, message="Enter Data File Name", 
                               defaultDir = os.getcwd(), 
                               style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
@@ -1522,10 +1522,10 @@ def glinfo():
     except ImportError:
         print("OpenGL not avaiable")
         return
-    print('OpenGL Ver. : ' + OpenGL.GL.glGetString(OpenGL.GL.GL_VERSION))
-    print('GS Lang Ver.: ' + OpenGL.GL.glGetString(OpenGL.GL.GL_SHADING_LANGUAGE_VERSION))    
-    print('Vendor      : ' + OpenGL.GL.glGetString(OpenGL.GL.GL_VENDOR))
-    print('Renderer    : ' + OpenGL.GL.glGetString(OpenGL.GL.GL_RENDERER))
+    print(('OpenGL Ver. : ' + OpenGL.GL.glGetString(OpenGL.GL.GL_VERSION)))
+    print(('GS Lang Ver.: ' + OpenGL.GL.glGetString(OpenGL.GL.GL_SHADING_LANGUAGE_VERSION)))    
+    print(('Vendor      : ' + OpenGL.GL.glGetString(OpenGL.GL.GL_VENDOR)))
+    print(('Renderer    : ' + OpenGL.GL.glGetString(OpenGL.GL.GL_RENDERER)))
 
 
 def setupmodel(package = '', root = '', path = 'setup_scripts', model=None,

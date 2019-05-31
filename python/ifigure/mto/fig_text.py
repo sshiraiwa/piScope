@@ -53,7 +53,7 @@ class FigText(FigObjGPHolder):
             obj._drag_start = None
             return obj
 
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigObjGPHolder.__new__(cls, *args, **kywds)
             obj = set_hidden_vars(obj)
             obj.setvar('clip', True)   ## backword compatiblity should come here
@@ -93,7 +93,7 @@ class FigText(FigObjGPHolder):
         obj = FigObjGPHolder.__new__(cls, *args, **kywds)
         obj = set_hidden_vars(obj)
 
-        for name in v.keys(): 
+        for name in list(v.keys()): 
             obj.setvar(name, v[name])
         obj.setvar("kywds", kywds)
 
@@ -104,7 +104,7 @@ class FigText(FigObjGPHolder):
         self._cb_added = False
         self._2d_text = True
         args = []
-        if not kywds.has_key('src'):
+        if 'src' not in kywds:
             kywds = self.getvar("kywds")
         GenericPointsHolder.__init__(self, num = num_gp)
         super(FigText,self).__init__(*args, **kywds)

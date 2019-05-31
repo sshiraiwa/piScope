@@ -375,7 +375,7 @@ class TreeCtrl(wx.TreeCtrl):
               return (t1.get_parent().i_child(t1) -
                       t2.get_parent().i_child(t2))
            except:
-              print(t1, t2)
+              print((t1, t2))
               return False
         else:
            return t1[2].OnCompareItems(t1, t2)
@@ -1002,7 +1002,7 @@ class ProjTreeViewer(wx.Panel):
             data.SetText(t)
             wx.TheClipboard.SetData(data)
             wx.TheClipboard.Close()            
-        text = unicode(t)
+        text = str(t)
         self._changed_flag = False        
         tdo = wx.TextDataObject(text)
         tdo._source = self
@@ -1150,7 +1150,7 @@ class ProjTreeViewer(wx.Panel):
 
     def item_path(self, item):
         path=[]
-	p = item
+        p = item
         croot=self.tree.GetRootItem()
         while p != croot:
            path = [self.tree.GetItemText(p).split(' ')[0]]+path
@@ -1198,7 +1198,7 @@ class ProjTreeViewer(wx.Panel):
         oitem = croot
         while True:
           try:
-           ntd2=nge.next()
+           ntd2=next(nge)
            nindex = nindex + 1
            oindex = oindex + 1
            if len(oge_list) > oindex: 
@@ -1341,9 +1341,9 @@ class ProjTreeViewer(wx.Panel):
         oitem = croot
         while True:
           try:
-           ntd2=nge.next()
+           ntd2=next(nge)
            try:
-              oitem2=oge.next()
+              oitem2=next(oge)
               otd2=self.tree.GetPyData(oitem2)
               #if not isinstance(otd2, TreeDict): continue
            except Exception:
@@ -1364,8 +1364,8 @@ class ProjTreeViewer(wx.Panel):
                   oitem=pitem
                   pitem=self.tree.GetItemParent(pitem)
 
-              print "adding sibling", ntd2.get_full_path()
-              print "next to", self.tree.GetPyData(oitem).get_full_path()
+              print("adding sibling", ntd2.get_full_path())
+              print("next to", self.tree.GetPyData(oitem).get_full_path())
               nindex = self.fill_sub_tree_org(
                        pitem, 
                        ntd2, 
@@ -1444,7 +1444,7 @@ class ProjTreeViewer(wx.Panel):
         oge=self.walk_treectrl(croot)
         for item in oge:
             data =  self.tree.GetPyData(item)
-	    if not isinstance(data, TreeDict): continue
+            if not isinstance(data, TreeDict): continue
             if (data._var0_show and data.get_full_path() == td.get_full_path()):
                 self.hide_contents(td, item)
                 self.show_contents(td, item)

@@ -201,7 +201,7 @@ def writeGif(filename, images, duration=0.1, loops=0, dither=1):
             images2.append(im)
             
         else:
-            print(isinstance(im, Image.Image))
+            print((isinstance(im, Image.Image)))
             raise ValueError("Unknown image type.")
     
     # check duration
@@ -220,7 +220,7 @@ def writeGif(filename, images, duration=0.1, loops=0, dither=1):
     # write
     try:
         n = _writeGifToFile(fp, images2, durations, loops)
-        print(n, 'frames written')
+        print((n, 'frames written'))
     finally:
         fp.close()
 

@@ -41,7 +41,7 @@ def dprint(*args):
        import sys
        ostdout = sys.stdout
        sys.stdout = debug_stdout
-       print('DEBUG('+str(debug_mode)+')::'+s)
+       print(('DEBUG('+str(debug_mode)+')::'+s))
        sys.stdout = ostdout
 
 def find_by_id(_id_):
@@ -67,7 +67,7 @@ class DPrint(object):
             import sys
             ostdout = sys.stdout
             sys.stdout = debug_stdout
-            print('DEBUG('+str(self.name)+')::'+s)
+            print(('DEBUG('+str(self.name)+')::'+s))
             sys.stdout = ostdout
 
 def prints(n):

@@ -6,6 +6,6 @@ class MDSjob(object):
    def __repr__(self):
        return str(self.command) + ' ' + str(self.params)
    def print_job(self):
-       print(self.command, self.params)
+       print((self.command, self.params))
    def txt_job(self):
        return (self.command, self.params)

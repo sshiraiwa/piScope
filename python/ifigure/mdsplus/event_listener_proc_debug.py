@@ -2,7 +2,7 @@
 fake listner thread for debugging
 '''
 import multiprocessing as mp
-import threading, Queue, traceback
+import threading, queue, traceback
 import time
 from weakref import WeakKeyDictionary
 import __future__
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     listener_thread.task_queue.put(('exit', ''), False)
     listener_thread.queue.put('stop')
 
-    print 'good bye'
+    print('good bye')
 
     
    

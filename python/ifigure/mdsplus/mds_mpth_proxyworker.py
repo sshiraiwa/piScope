@@ -58,7 +58,7 @@ class ProxyWorkerBase(object):
                              def_names.append(n)
                        r2 = {}
                        for n in def_names:
-                           if r.has_key(n):
+                           if n in r:
                                if isinstance(r[n], ndarray) and can_compress:  r[n] = squeeze(r[n])
                                if (isinstance(r[n], ndarray) and
                                     r[n].size > 5e4 and len(r[n].shape) == 1 and
@@ -90,7 +90,7 @@ class MDSMPProxyWorker(mp.Process, ProxyWorkerBase):
        super(MDSMPProxyWorker, self).__init__(*args, **kargs)
        self.task_queue = task_queue
        self.result_queue = result_queue
-       self.port = long(port)
+       self.port = int(port)
        self.host = host
 
    def run(self, *args, **kargs):
@@ -102,7 +102,7 @@ class MDSTHProxyWorker(threading.Thread, ProxyWorkerBase):
        super(MDSTHProxyWorker, self).__init__(*args, **kargs)
        self.task_queue = task_queue
        self.result_queue = result_queue
-       self.port = long(port)
+       self.port = int(port)
        self.host = host
        ProxyWorkerBase.use_compress = True
    def run(self, *args, **kargs):

@@ -5,20 +5,20 @@ print(" ##########################")
 print("")
 print(" Running evniroment for script file")
 #print "   proj    =", proj
-print("   treeobj =", obj.get_full_path(), obj)
+print(("   treeobj =", obj.get_full_path(), obj))
 print(" ")
 
 import time, os
-print(" Script File : ",  obj.path2fullpath())
-print(" Last Modified : ", time.ctime(obj._script._script_mtime))
+print((" Script File : ",  obj.path2fullpath()))
+print((" Last Modified : ", time.ctime(obj._script._script_mtime)))
 
 solver=obj.get_parent()
-print('model folder:', solver.model.get_full_path())
-print('solution folder :', solver.sol.get_full_path())
+print(('model folder:', solver.model.get_full_path()))
+print(('solution folder :', solver.sol.get_full_path()))
 
 root=obj.get_root_parent()
-print('setting:' , root.psetting.get_full_path())
-print('connection:' , root.psetting.loki.get_full_path())
+print(('setting:' , root.psetting.get_full_path()))
+print(('connection:' , root.psetting.loki.get_full_path()))
 
 proj = obj.get_root_parent()
 wdir = proj.eval("wdir")

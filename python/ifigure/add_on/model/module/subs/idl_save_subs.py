@@ -48,7 +48,7 @@ module_init= None
 ######################################################
 def expand_recarray(top, var):
     for name in var.dtype.names:
-       print(name,  type(var.field(name)))
+       print((name,  type(var.field(name))))
 
        if isinstance(var.field(name), numpy.recarray):
            child=PyData()
@@ -60,7 +60,7 @@ def expand_recarray(top, var):
 def read_sav_file(this):
     file=this.getvar("filename")
     s = idlsave.read(file)
-    for key in s.keys():
+    for key in list(s.keys()):
         if isinstance(s[key], numpy.recarray):
            child=PyData()
            this.add_child(key, child)

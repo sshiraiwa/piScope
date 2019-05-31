@@ -91,7 +91,7 @@ class PyModule(py_code.PyCode, FileHolder):
         try:
             return self._obj.run_method(mname, *args, **kargs)
         except Exception:
-            raise(ValueError, "Module Method Call Failed")
+            raise ValueError
 #            logging.exception("Module Method Call Failed")
 
     def call_function(self, fname, *args, **kargs):
@@ -100,7 +100,7 @@ class PyModule(py_code.PyCode, FileHolder):
             f = getattr(self._obj._m_co, fname)
             return f(*args, **kargs)
         except Exception:
-            raise(ValueError, "Module Function Call Failed")
+            raise ValueError
 #            logging.exception("Module Method Call Failed")
     
     def load_module(self, file):
@@ -145,7 +145,7 @@ class PyModule(py_code.PyCode, FileHolder):
            self._first_load = False
       except:
         logging.exception("Module Method Call Failed")
-        print("PyModule: load_module failed:", file)
+        print(("PyModule: load_module failed:", file))
       return self
 
     def activate(self):
@@ -220,7 +220,7 @@ class PyModule(py_code.PyCode, FileHolder):
 #    def onProjTreeActivate(self, e):
 #        self.onEditModule(e)     
     def onEditModule(self, e):
-        print(wx.GetKeyState(wx.WXK_CONTROL))
+        print((wx.GetKeyState(wx.WXK_CONTROL)))
 #        if wx.GetKeyState(wx.WXK_CONTROL):
 #           self._obj.edit_module()
 #           return
@@ -326,7 +326,7 @@ class PyModule(py_code.PyCode, FileHolder):
                 os.rename(sfile, nsfile)
                 self.set_path_pathmode(nsfile)
             else:
-                print('can not find', sfile)
+                print(('can not find', sfile))
 
             #### remove old pyc pyo
             if os.path.exists(sfile+'c'):
@@ -376,7 +376,7 @@ class PyModule(py_code.PyCode, FileHolder):
             return self.path2fullpath(mn, pn)
         except:
             import traceback
-            print(traceback.format_exc())
+            print((traceback.format_exc()))
             return ''
       
 

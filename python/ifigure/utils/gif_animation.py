@@ -11,5 +11,5 @@ def save_animation(func, params, canvas,filename='animation.gif',
        image = canvas.canvas.bitmap.ConvertToImage()
        images.append(image_to_pil(image))
 
-   print(writeGif.__doc__)
+   print((writeGif.__doc__))
    writeGif(filename, images, duration=duration, dither=dither)

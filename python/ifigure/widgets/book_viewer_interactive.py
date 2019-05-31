@@ -46,7 +46,7 @@ for x in _type_numbers:
   try:
       _dtype_numbers.append(np.dtype(x))
   except:
-      print('numpy does not know type = '+x)
+      print(('numpy does not know type = '+x))
 
 class NoPageError(Exception):
     pass
@@ -113,7 +113,7 @@ def pop_metadata(kargs):
             meta['long_description'] = meta0
 
         names = []
-        for k in kargs.keys():
+        for k in list(kargs.keys()):
             if k.endswith('metadata'):
                 names.append(k)
                 header = k[:-8]
@@ -361,7 +361,7 @@ class BookViewerInteractive(object):
                       obj.realize()
                   except:
                       traceback.print_exc()
-                      print("failed to realize (destroied)" + str(obj))
+                      print(("failed to realize (destroied)" + str(obj)))
                       obj.destroy()
               self._interactive_update_request = ([], [])
               ifigure.events.SendChangedEvent(self.book, w = self, useProcessEvent=True)
@@ -819,7 +819,7 @@ class BookViewerInteractive(object):
        try:
           obj=cls(*args, **kargs)
        except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
 
        x = convert_2_real_array(obj.getvar('x'))
@@ -901,7 +901,7 @@ class BookViewerInteractive(object):
        try:
            obj=FigTriplot(*args, **kargs)
        except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
 
        return obj
@@ -918,7 +918,7 @@ class BookViewerInteractive(object):
        try:
           obj=FigSpline(*args, **kargs)
        except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
        return obj
    
@@ -929,7 +929,7 @@ class BookViewerInteractive(object):
         try:
            obj=FigContour(*args, **kargs)
         except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
         return obj
     
@@ -940,7 +940,7 @@ class BookViewerInteractive(object):
         try:
            obj=FigContour(*args, **kargs)
         except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
         return obj
 
@@ -950,7 +950,7 @@ class BookViewerInteractive(object):
         try:
            obj=FigScatter(*args, **kargs)
         except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
         return obj
 
@@ -1006,7 +1006,7 @@ class BookViewerInteractive(object):
 
             if len(w) != nx:
                 raise ValueError('weights should have the same shape as x')
-            for i in xrange(nx):
+            for i in range(nx):
                 if len(w[i]) != len(x[i]):
                     raise ValueError(
                         'weights should have the same shape as x')
@@ -1034,7 +1034,7 @@ class BookViewerInteractive(object):
                    obj.add_child(name, obj2)
                wx.CallAfter(obj2.call_adjust_range)                                  
         except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
 
         return obj
@@ -1046,7 +1046,7 @@ class BookViewerInteractive(object):
         try:
            obj=FigTricontour(*args, **kargs)
         except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
         return obj
 
@@ -1057,7 +1057,7 @@ class BookViewerInteractive(object):
         try:
            obj=FigTricontour(*args, **kargs)
         except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
         return obj
 
@@ -1070,7 +1070,7 @@ class BookViewerInteractive(object):
        try:
           obj=FigImage(*args, **kargs)
        except ValueError as x:
-          print(x.message)
+          print((x.message))
           return
        return obj
 
@@ -1085,7 +1085,7 @@ class BookViewerInteractive(object):
            else:
                obj=FigQuiver(*args, **kargs)
         except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
         return obj
     @allow_interactive_call
@@ -1096,7 +1096,7 @@ class BookViewerInteractive(object):
         try:
            obj=FigQuiver3D(*args, **kargs)
         except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
         return obj
       
@@ -1143,7 +1143,7 @@ class BookViewerInteractive(object):
        try:
           obj=FigSpec(*args, **kargs)
        except ValueError as x:
-          print(x.message)
+          print((x.message))
           return
        return obj
 
@@ -1153,7 +1153,7 @@ class BookViewerInteractive(object):
        try:
           obj=FigTripcolor(*args, **kargs)
        except ValueError as x:
-          print(x.message)
+          print((x.message))
           return
        return obj
 
@@ -1163,7 +1163,7 @@ class BookViewerInteractive(object):
        try:
           obj=FigAxline(*args, **kargs)
        except ValueError as x:
-          print(x.message)
+          print((x.message))
           return
 
        return obj
@@ -1174,7 +1174,7 @@ class BookViewerInteractive(object):
        try:
           obj=FigAxlineC(*args, **kargs)
        except ValueError as x:
-          print(x.message)
+          print((x.message))
           return
        return obj
 
@@ -1184,7 +1184,7 @@ class BookViewerInteractive(object):
        try:
           obj=FigAxspan(*args, **kargs)
        except ValueError as x:
-          print(x.message)
+          print((x.message))
           return
 
        return obj
@@ -1195,7 +1195,7 @@ class BookViewerInteractive(object):
        try:
           obj=FigAxspanC(*args, **kargs)
        except ValueError as x:
-          print(x.message)
+          print((x.message))
           return
 
        return obj
@@ -1209,7 +1209,7 @@ class BookViewerInteractive(object):
               kargs['trans'] = ['axes']*2
           obj = FigText(*args, **kargs)
        except ValueError as x:
-          print(x.message)
+          print((x.message))
           return
 
        return obj
@@ -1224,7 +1224,7 @@ class BookViewerInteractive(object):
           #kargs['autonext'] = False
           obj = FigArrow(*args, **kargs)
        except ValueError as x:
-          print(x.message)
+          print((x.message))
           return
        return obj
 
@@ -1235,7 +1235,7 @@ class BookViewerInteractive(object):
        try:
           obj = FigArrow(*args, **kargs)
        except ValueError as x:
-          print(x.message)
+          print((x.message))
           return
        return obj
 
@@ -1253,7 +1253,7 @@ class BookViewerInteractive(object):
        from ifigure.mto.fig_legend import FigLegend
        if len(args) == 0: return
        if len(args) == 1 and isinstance(args[0], str): args = ((args[0],),)
-       if kargs.has_key("axes2"): 
+       if "axes2" in kargs: 
             kargs["container_idx"] = 1 if kargs["axes2"] else 0
             del kargs["axes2"]
 
@@ -1366,7 +1366,7 @@ class BookViewerInteractive(object):
         if not fig_axes.get_3d(): return 
         ax = fig_axes._artists[0]
         l = ax.get_lighting()
-        if len(kargs.keys()) == 0: return l
+        if len(list(kargs.keys())) == 0: return l
         for k in kargs:
             if not k in l:
                  raise KeyError(str(k) + ' does not exists')
@@ -1380,7 +1380,7 @@ class BookViewerInteractive(object):
         if fig_axes is None: return
         if not fig_axes.get_3d(): return 
         ax = fig_axes._artists[0]
-        if len(args) == 0 and len(kargs.keys()) == 0:
+        if len(args) == 0 and len(list(kargs.keys())) == 0:
             return ax.elev, ax.azim
         elif len(args) == 2:
             ax.elev = args[0]
@@ -1462,7 +1462,7 @@ class BookViewerInteractive(object):
                 ax._show_3d_axes = False
                 fig_axes.set_bmp_update(False)
             else:
-                print('Unkonw keyword: '+ args[0])
+                print(('Unkonw keyword: '+ args[0]))
     def view(self, *args, **kargs):
         return self._view(*args, **kargs)
     
@@ -1563,10 +1563,10 @@ class BookViewerInteractive(object):
                    ll.append(listparam[p])
 
         if len(ll) == 0:
-            print('Property '+name+ ' is not found')
+            print(('Property '+name+ ' is not found'))
             return
         if len(ll) > 1:
-            print('More thant two properties are found by '+name)
+            print(('More thant two properties are found by '+name))
             print('Please inform developer this problem')
             return 
         #dprint1(ll)

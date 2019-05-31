@@ -61,13 +61,13 @@ def define_attrib(shader, name):
 def check_framebuffer(message, mode = GL_FRAMEBUFFER):
     if (glCheckFramebufferStatus(mode) !=
         GL_FRAMEBUFFER_COMPLETE):
-         print('Framebuffer imcomplete (' + message + ')')
-         print(str(glCheckFramebufferStatus(GL_FRAMEBUFFER)))
-         print(str(GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT))
-         print(str(GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS))
-         print(str(GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT))
-         print(str(GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE))
-         print(str(GL_FRAMEBUFFER_UNSUPPORTED))
+         print(('Framebuffer imcomplete (' + message + ')'))
+         print((str(glCheckFramebufferStatus(GL_FRAMEBUFFER))))
+         print((str(GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT)))
+         print((str(GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS)))
+         print((str(GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT)))
+         print((str(GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE)))
+         print((str(GL_FRAMEBUFFER_UNSUPPORTED)))
 
          return False
     #print "test sample", glGetIntegerv(GL_SAMPLE_BUFFERS)
@@ -108,7 +108,7 @@ def wait_gl_finish(method):
 def check_gl_error():
     error = glGetError()
     if error != 0:
-       print("GL error ", error)
+       print(("GL error ", error))
        
 class vbos_dict(dict):
     def __del__(self, *args, **kwargs):

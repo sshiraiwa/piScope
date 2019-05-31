@@ -21,7 +21,7 @@
 import collections, weakref, threading, traceback
 import ifigure.utils.cbook as cbook
 import sys, os, shutil, tarfile, time, wx
-import cPickle as pickle
+import pickle as pickle
 import ifigure
 from ifigure.utils.debug import dprint
 import ifigure.ifigure_config as ifigure_config
@@ -38,10 +38,10 @@ td_name_space = {}
 def fill_td_name_space(filename):
     try:
         file, co, mtime = cbook.LoadScriptFile(filename) 
-        exec co in {}, td_name_space
+        exec(co, {}, td_name_space)
     except:
         print('Failed to build script name space')
-        print(traceback.format_exc())
+        print((traceback.format_exc()))
 
 def working_dir_exists_message1(path): 
     m = 'Working directory already exists. Do you want to delete it to continue?\nwdir = ' + str(path)
@@ -66,10 +66,9 @@ class BaseAttr(type):
     def __init__(cls, name, base, d):
         cls._image_load_done=False
         type.__init__(cls, name, base, d)
-class TreeDict(object):
+class TreeDict(object, metaclass=BaseAttr):
     ### index number of object commonly used 
     ### among all classes derived from TreeDict
-    __metaclass__ = BaseAttr
     _debug=0
     _id_base = 0
     _save_var = True
@@ -228,7 +227,7 @@ class TreeDict(object):
            self._parent._del_child(self)
 
        #### clean var
-       for key in self._var.keys(): self._var[key]=None
+       for key in list(self._var.keys()): self._var[key]=None
 
 
     def __getattr__(self, attr):
@@ -245,7 +244,7 @@ class TreeDict(object):
        raise AttributeError('Tree name should not start from "_"')
 
     def __setattr__(self, attr, val):
-       if not self.__dict__.has_key('_TreeDict__initialised'):  
+       if '_TreeDict__initialised' not in self.__dict__:  
   #         this test allows attributes to be set in the __init__ method
            return object.__setattr__(self, attr, val)     
        elif attr.startswith("_"):
@@ -292,7 +291,7 @@ class TreeDict(object):
 
     def _process_kywd(self, kywds, key, defv):
 #        print 'in', kywds
-        if kywds.has_key(key): 
+        if key in kywds: 
             self.setvar(key, kywds[key])
             del kywds[key]
         else: self.setvar(key, defv)
@@ -301,7 +300,7 @@ class TreeDict(object):
 
     def _process_kywd2(self, kywds, key, defv):
 #        print 'in', kywds
-        if kywds.has_key(key): 
+        if key in kywds: 
             val = kywds[key]
             del kywds[key]
         else: 
@@ -314,7 +313,7 @@ class TreeDict(object):
           # easy to read string representation of data
           # print "generating string"
           rl = []
-          for k,v in self._getLeaves().items():
+          for k,v in list(self._getLeaves().items()):
               rl.append("%s = %s" %  (k, v.__repr__()))
   #        return "\n".join(rl)
           return rl
@@ -530,7 +529,7 @@ class TreeDict(object):
            conflict = False
            flag, bname1, do_rename = name_check(bname, warning)
            if not flag:
-               print('can not add '+name)
+               print(('can not add '+name))
                return
            while hasattr(self, bname1): 
                conflict = True
@@ -602,7 +601,7 @@ class TreeDict(object):
         for name in a[1:]:
             p = p.get_child(name=name)
             if p is None:
-               print('can not find', name)
+               print(('can not find', name))
                return None
         return p
 
@@ -754,10 +753,10 @@ class TreeDict(object):
    #   Variable/Note Setter and Getter
    #
     def get_varlist(self):
-       return self._var.keys()
+       return list(self._var.keys())
 
     def hasvar(self, name):
-       return self._var.has_key(name)
+       return name in self._var
 
     def setvar(self, *args):
 #       print self, args
@@ -779,7 +778,7 @@ class TreeDict(object):
        eval("x", "y", "z") = evaluate "x", "y", "z"
        eval() = return self._var0
        '''
-       if kargs.has_key('np'): np = kargs['np']
+       if 'np' in kargs: np = kargs['np']
        else: np = False
        if len(args) == 1: 
            return self._eval(args[0], use_np=np)
@@ -903,7 +902,7 @@ class TreeDict(object):
               else: return value
           return value
        except Exception:
-          print(sys.exc_info())
+          print((sys.exc_info()))
 #          pass
        return None
 
@@ -920,7 +919,7 @@ class TreeDict(object):
     def getvar_copy(self):
         var = self.getvar()
         d = collections.OrderedDict()
-        for key in var.keys():
+        for key in list(var.keys()):
            d[key] = var[key]
         return d
     
@@ -928,7 +927,7 @@ class TreeDict(object):
        """
        compare vars stored in two tree dicts
        """
-       print("comparing", self.get_full_path(), td.get_full_path())
+       print(("comparing", self.get_full_path(), td.get_full_path()))
        diff = cbook.DictDiffer(self.getvar(), td.getvar())
 
     def setnote(self, *args):
@@ -939,7 +938,7 @@ class TreeDict(object):
           try:
             a = self._var[args[0]]
           except KeyError:
-            print("!!!", self.get_full_path(), " does not have ", name)
+            print(("!!!", self.get_full_path(), " does not have ", name))
             return 
           self._note[args[0]]=args[1]
        if len(args)==1:
@@ -1130,7 +1129,7 @@ class TreeDict(object):
        if (self.hasvar('subtree_path') and
            os.path.exists(self.getvar('subtree_path'))):
            path = self.getvar('subtree_path')
-           print('exporting subtree to '+path)
+           print(('exporting subtree to '+path))
            self.save_subtree(path)
        else:
            self.onSaveSubTreeAs(e)
@@ -1142,7 +1141,7 @@ class TreeDict(object):
         if path == '': return
         if path[-4:] != '.pfs':
               path=path+'.pfs'
-        print('exporting subtree to '+path)
+        print(('exporting subtree to '+path))
         self.save_subtree(path)
         self.setvar('subtree_path', path)
 
@@ -1152,7 +1151,7 @@ class TreeDict(object):
 
         if path == '': return
         path = os.path.join(path, self._name)
-        print('exporting files to '+path)
+        print(('exporting files to '+path))
         import shutil
         shutil.copytree(self.owndir(), path)
 
@@ -1239,7 +1238,7 @@ class TreeDict(object):
         if self._name == new: return True
         if self.get_parent() is None: return False
         if hasattr(self.get_parent(), new):
-           print(self.get_parent().get_full_path() +' already has attr '+ new)
+           print((self.get_parent().get_full_path() +' already has attr '+ new))
            return False
         if self._name != self._genuine_name:
            dprint1('Cannot rename since object has different screen name')
@@ -1264,7 +1263,7 @@ class TreeDict(object):
         if (self.has_owndir() and  #self._can_have_child
             self._has_private_owndir):
            print(' name seems to be used in the past')
-           print(' delete ' + self.has_owndir() + ' manually')
+           print((' delete ' + self.has_owndir() + ' manually'))
            self._name = old
            return False
         if (rename_owndir and
@@ -1319,7 +1318,7 @@ class TreeDict(object):
             try:
                 __func__(path)
             except OSError:
-                print('Remove error', path)
+                print(('Remove error', path))
         def removeall(path):
             if not os.path.isdir(path):
                return
@@ -1374,7 +1373,7 @@ class TreeDict(object):
         import subprocess as sp
         if not self.has_owndir(): self.mk_owndir()
         d = os.getcwd()
-        print(sp.Popen(command, stdout=sp.PIPE, shell=True).stdout.read())
+        print((sp.Popen(command, stdout=sp.PIPE, shell=True).stdout.read()))
         os.chdir(d)
     #
     #  write2shell : write variable to shell
@@ -1455,7 +1454,7 @@ class TreeDict(object):
                  '_genuine_name': self._genuine_name,  }
         data['TreeDict'] = (1, param)
         if not self.check_ownitem_exists():
-            print("incomplete own items" + str(self))
+            print(("incomplete own items" + str(self)))
         return data
 
     def load(self, fid, olist=None, nlist=None, 
@@ -1494,7 +1493,7 @@ class TreeDict(object):
            if "var" in h2:
                for key in h2["var"]: obj._var[key]=h2["var"][key]
            obj._note=h2["note"]
-           if h2.has_key('format'):
+           if 'format' in h2:
               dprint2('Fileformat ', h2["format"])
               if h2["format"] == 1:
                   obj.load_data(fid)
@@ -1554,7 +1553,7 @@ class TreeDict(object):
             for item in obj.ownitem():
                 fpath = os.path.join(obj.owndir(), item)
                 if not os.path.exists(fpath): 
-                     print("not found :" + fpath)
+                     print(("not found :" + fpath))
     def check_ownitem_exists(self):
         for item in self.ownitem():
             fpath = os.path.join(self.owndir(), item)
@@ -1580,7 +1579,7 @@ class TreeDict(object):
         obj, ol, nl=TreeDict().load(fid)
         name=obj.get_next_name(obj.get_namebase())
         if obj.name != name:
-           print("renaming object name", obj.name, "->", name)
+           print(("renaming object name", obj.name, "->", name))
         self.add_child(name, obj)
         return obj, ol, nl
 
@@ -1646,8 +1645,8 @@ class TreeDict(object):
              fid = open(fpath, 'wb')
              self.save2(fid)
              fid.close()
-         except IOError, error:
-             print(traceback.format_exc())
+         except IOError as error:
+             print((traceback.format_exc()))
              return False
          if not maketar: return True, tmpdir
 
@@ -1972,7 +1971,7 @@ class TopTreeDict(TreeDict):
             #  to files.
             self.save(fid)
             fid.close()
-         except IOError, error:
+         except IOError as error:
             return False
 
          ### set proj.filename
@@ -2076,7 +2075,7 @@ class TopTreeDict(TreeDict):
          print("initializing model...")
          for obj in real_top.walk_tree(stop_at_ext = True):
              obj.init_after_load(olist, nlist)
-         print("done....(init) "+ str(real_top))
+         print(("done....(init) "+ str(real_top)))
       
          return real_top
 
@@ -2162,17 +2161,17 @@ if __name__ == '__main__':
     root.test.add_child("test3", TreeDict()) 
     
 
-    print("root", root)
-    print("root.test", root.test)
-    print("root.test.test3", root.test.test3)
-    print("root.test2", root.test2)
+    print(("root", root))
+    print(("root.test", root.test))
+    print(("root.test.test3", root.test.test3))
+    print(("root.test2", root.test2))
 
     gen=root.walk_tree()
-    print(gen.next().get_full_path())
-    print(gen.next().get_full_path())
-    print(gen.next().get_full_path())
-    print(gen.next().get_full_path())
-    print(gen.next().get_full_path())
+    print((gen.next().get_full_path()))
+    print((gen.next().get_full_path()))
+    print((gen.next().get_full_path()))
+    print((gen.next().get_full_path()))
+    print((gen.next().get_full_path()))
 
 
 
@@ -2200,7 +2199,7 @@ if __name__ == '__main__':
 
      #  attribute setting
      page.setp('area', [0,1,0,1])
-     print(page.getp("area"))
+     print((page.getp("area")))
 
      # if you do  getp_all, pay attention that
      # the returned value is the SAME object 
@@ -2211,16 +2210,16 @@ if __name__ == '__main__':
      print(a)
 
      ### this generate tree list ###
-     print(page.list_all())
+     print((page.list_all()))
 
      ### can access read-only member
      ### if getter is properly set
-     print(page.axes1.plot.id)
+     print((page.axes1.plot.id))
 
      #   page.axes1.plot.id=100  
      #   this will cause error (read-only)
 
-     print(page.axes1.plot)
+     print((page.axes1.plot))
 
      ### this is not allowed
      #  in other word, all members are read-only

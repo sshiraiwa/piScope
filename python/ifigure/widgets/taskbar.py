@@ -535,7 +535,7 @@ app_logo = PyEmbeddedImage(
     "YA72pbSLgMh1B4hXYN8vtevu+xdtA2AONthgg72iDTrMwQYbbLBXtAEwBxtssMFe0f4/U4pA"
     "UwOVBpYAAAAASUVORK5CYII=")
 
-import os, threading, subprocess, Queue, weakref, tempfile
+import os, threading, subprocess, queue, weakref, tempfile
 import wx, sys, time
 import wx.aui as aui
 
@@ -710,7 +710,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
     def OnOpenNew(self, evt):
-        self.queues.append(Queue.Queue())
+        self.queues.append(queue.Queue())
         thread = JobMonitor(self.queues[-1], self.redirector)
         log = wx.TextCtrl(self.nb, -1, 
                 style=wx.TE_MULTILINE|wx.TE_READONLY) 

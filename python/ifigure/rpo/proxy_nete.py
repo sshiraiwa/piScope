@@ -3,8 +3,8 @@ import os, Pyro4
 class ProxyNeTe(object):
     def fill_array(self, i, txt):
         ct = []
-        print(i,txt[i])
-        for t in range(1+i, long(txt[i])+1+i):
+        print((i,txt[i]))
+        for t in range(1+i, int(txt[i])+1+i):
            ct.append(txt[t])
         return t+1, ct
 

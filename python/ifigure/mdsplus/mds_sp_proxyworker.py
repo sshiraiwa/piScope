@@ -1,6 +1,6 @@
 import sys, socket, shlex, threading, os, binascii, subprocess, time, tempfile
-import SocketServer, traceback
-import cPickle as pickle
+import socketserver, traceback
+import pickle as pickle
 from ifigure.utils.pickled_pipe import PickledPipe
 
 from ifigure.mdsplus.proxy_jobrunner import JobRunner
@@ -44,7 +44,7 @@ if __name__ == '__main__':
                      def_names.append(n)
                r2 = {}
                for n in def_names:
-                   if r.has_key(n):
+                   if n in r:
                       r2[n] = r[n]
                ch.send(r2)
         else:

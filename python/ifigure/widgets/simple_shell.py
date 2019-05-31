@@ -1,5 +1,5 @@
 import wx, ifigure, os, sys
-import cPickle as pickle
+import pickle as pickle
 import ifigure.server
 import numpy as np
 
@@ -23,10 +23,10 @@ from os.path import expanduser, abspath
 from ifigure.utils.wx3to4 import isWX3
 
 import time
-import thread
+import _thread
 from threading import Timer, Thread
 try:
-    from Queue import Queue, Empty
+    from queue import Queue, Empty
 except ImportError:
     from queue import Queue, Empty  # python 3.x
     
@@ -96,8 +96,8 @@ class ShellBase(wx.py.shell.Shell):
         '''
         this overwrite the origial setBuiltinKeywords
         '''
-        import __builtin__
-        __builtin__.exit = __builtin__.quit = \
+        import builtins
+        builtins.exit = builtins.quit = \
              self.quit
         
     def OnKeyDown(self, evt):
@@ -259,7 +259,7 @@ class SimpleShell(ShellBase):
                 dprint1('running startup file', file)
                 txt = 'Running user startup file '+file
                 self.push('print %r' % txt)
-                execfile(file, globals(), self.lvar)
+                exec(compile(open(file, "rb").read(), file, 'exec'), globals(), self.lvar)
 
        self.SetDropTarget(simple_shell_droptarget(self))
     
@@ -270,7 +270,7 @@ class SimpleShell(ShellBase):
           self.history=pickle.load(f)
           f.close 
        except Exception:
-          print(sys.exc_info()[:2])
+          print((sys.exc_info()[:2]))
        if self.history[-1] != '#end of history':
           self.history.append('#end of history')
 
@@ -287,10 +287,10 @@ class SimpleShell(ShellBase):
         '''
         this overwrite the origial setBuiltinKeywords
         '''
-        import __builtin__
-        __builtin__.exit = __builtin__.quit = \
+        import builtins
+        builtins.exit = builtins.quit = \
              self.quit
-        __builtin__.sx = sx
+        builtins.sx = sx
     def set_command_history(self, panel):
         self.ch = panel
 
@@ -331,7 +331,7 @@ class SimpleShell(ShellBase):
                  self.lvar['_tmp_'] = None                
                  txt ='if isinstance(command, TreeDict): _tmp_='+command+'get_children()'
                  code = compile(txt, '<string>', 'exec')
-                 exec code in globals(), self.lvar
+                 exec(code, globals(), self.lvar)
              except:
                  pass
 
@@ -373,7 +373,7 @@ class SimpleShell(ShellBase):
         txt = '_tmp_='+name
         try:
            code = compile(txt, '<string>', 'exec')
-           exec code in globals(), self.lvar
+           exec(code, globals(), self.lvar)
         except:
 #           dprint1(txt)
            pass
@@ -461,7 +461,7 @@ class SimpleShell(ShellBase):
                  str(getattr(types, name)).split("'")[1]
                  for name in dir(types) if not name.startswith('_')}
         
-        for key in self.lvar.keys():
+        for key in list(self.lvar.keys()):
             if not key.startswith('_'):
                 val = self.lvar[key]
                 t0 = type(val).__name__

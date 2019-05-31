@@ -10,6 +10,7 @@ from mpl_toolkits.mplot3d.axes3d import Axes3D
 import mpl_toolkits.mplot3d.art3d as art3d
 import matplotlib.transforms as trans
 from matplotlib.colors import ColorConverter
+from functools import reduce
 cc = ColorConverter()
 
 from matplotlib.artist import allow_rasterization
@@ -290,7 +291,7 @@ class Axes3DMod(Axes3D):
               
         arr = self._gl_mask_artist.get_array()
 
-        for k in id_dict.keys():
+        for k in list(id_dict.keys()):
             if (id_dict[k]() == artist):
                if hit_id is not None:
                    if len(hit_id) > 0:
@@ -787,8 +788,8 @@ class Axes3DMod(Axes3D):
         rstride = kwargs.pop('rstride', 10)
         cstride = kwargs.pop('cstride', 10)
         idxset3d =[]
-        r = list(xrange(0, rows, rstride))
-        c = list(xrange(0, cols, cstride))
+        r = list(range(0, rows, rstride))
+        c = list(range(0, cols, cstride))
 
         X3D = X[r, :][:, c].flatten()
         Y3D = Y[r, :][:, c].flatten()
@@ -1245,7 +1246,7 @@ class Axes3DMod(Axes3D):
 
 
         if self._gl_scale != 1.0:
-            print("gl_scale", self._gl_scale)            
+            print(("gl_scale", self._gl_scale))            
             xmin, xmax = self.get_xlim3d()
             ymin, ymax = self.get_ylim3d()
             zmin, zmax = self.get_zlim3d()

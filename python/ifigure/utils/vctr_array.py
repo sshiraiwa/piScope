@@ -17,7 +17,7 @@
 '''
 import numpy as np
 def expand_vctr(x, y, n, l):
-    print x.shape, 
+    print(x.shape, end=' ') 
     res_x = [np.hstack((x[k, :l[k]], np.nan)) for k in range(n)]
     res_y = [np.hstack((y[k, :l[k]], np.nan)) for k in range(n)]
 

@@ -200,7 +200,7 @@ class FileHolder(object):
             # this check is to recovery from a bug
             # once introduced before.     
             if (not isinstance(self.getvar(pathname), str) and
-                not isinstance(self.getvar(pathname), unicode)):
+                not isinstance(self.getvar(pathname), str)):
                 self.delvar(pathname)
                 return ''
             return os.path.join(base, self.getvar(pathname))

@@ -388,7 +388,7 @@ class ProjTreeViewer(wx.Panel):
 #        self.dragItem = e.GetItem()
         app=self.tree.GetTopLevelParent()
         app._text_clip=dictobj.get_full_path()
-        text = unicode(dictobj.get_full_path())
+        text = str(dictobj.get_full_path())
         tdo = wx.TextDataObject(text)
         tds = wx.DropSource(self.tree)
         tds.SetData(tdo)
@@ -477,8 +477,8 @@ class ProjTreeViewer(wx.Panel):
         croot=self.tree.GetRootItem()
         for item in self.walk_treectrl(croot):
            treedict=self.tree.GetPyData(item)
-           print(treedict.get_full_path())
-           print(self.item_path(item))
+           print((treedict.get_full_path()))
+           print((self.item_path(item)))
            if treedict is None:
                 #rm_list.append(item)
                 self.tree.Delete(item)
@@ -516,9 +516,9 @@ class ProjTreeViewer(wx.Panel):
         oitem = croot
         while True:
           try:
-           ntd2=nge.next()
+           ntd2=next(nge)
            try:
-              oitem2=oge.next()
+              oitem2=next(oge)
               otd2=self.tree.GetPyData(oitem2)
            except Exception:
               otd2=None

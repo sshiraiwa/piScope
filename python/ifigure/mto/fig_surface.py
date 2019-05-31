@@ -31,8 +31,8 @@ def _reduce_size(X, Y, Z, rstride, cstride):
     # We want two sets of lines, one running along the "rows" of
     # Z and another set of lines running along the "columns" of Z.
     # This transpose will make it easy to obtain the columns.
-    rii = range(0, rows, rstride)
-    cii = range(0, cols, cstride)
+    rii = list(range(0, rows, rstride))
+    cii = list(range(0, cols, cstride))
 
     # Add the last index only if needed
     if rows > 0 and rii[-1] != (rows - 1) :
@@ -52,7 +52,7 @@ class FigSurface(FigObj, XUser, YUser, ZUser,CUser):
             obj._fine_artist = None
             return obj
 
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigObj.__new__(cls, *args, **kywds)
             obj = set_hidden_vars(obj)
             return obj
@@ -90,7 +90,7 @@ class FigSurface(FigObj, XUser, YUser, ZUser,CUser):
             kywds['cmap'] = v['cmap']
             del v['cmap']
 
-        for name in v.keys(): obj.setvar(name, v[name])
+        for name in list(v.keys()): obj.setvar(name, v[name])
         obj.setvar("kywds", kywds)
         return obj
 
@@ -101,7 +101,7 @@ class FigSurface(FigObj, XUser, YUser, ZUser,CUser):
         CUser.__init__(self)
 
         args = []
-        if not kywds.has_key('src'):
+        if 'src' not in kywds:
             kywds = self.getvar("kywds")
         super(FigSurface,self).__init__(*args, **kywds)
         self._method  = 'plot_surface'
@@ -581,7 +581,7 @@ class FigRevolve(FigSurface):
             obj._fine_artist = None
             return obj
 
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigObj.__new__(cls, *args, **kywds)
             obj = set_hidden_vars(obj)
             return obj
@@ -615,7 +615,7 @@ class FigRevolve(FigSurface):
             kywds['cmap'] = v['cmap']
             del v['cmap']
 
-        for name in v.keys(): obj.setvar(name, v[name])
+        for name in list(v.keys()): obj.setvar(name, v[name])
         obj.setvar("kywds", kywds)
         return obj
 

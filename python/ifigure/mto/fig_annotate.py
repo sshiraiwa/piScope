@@ -27,7 +27,7 @@ class FigAnnotate(FigObj):
            arrowprops=dict(arrowstyle="->",
                            connectionstyle="arc3")
         self._objs=[]  ## for debug....        
-        if kywds.has_key("draggable"): 
+        if "draggable" in kywds: 
             self.setvar("draggable", kywds["draggable"])
             del kywds["draggable"]
         else: self.setvar("draggable", True)
@@ -189,7 +189,7 @@ class FigAnnotate(FigObj):
         return hit, extra, type, loc
 
     def drag_a(self, a, evt, shift=None):
-        print(self._picker_a_type)
+        print((self._picker_a_type))
         shift = evt.guiEvent.ShiftDown()
         redraw = super(FigAnnotate, self).drag_a(a, evt, shift = shift)
         return redraw

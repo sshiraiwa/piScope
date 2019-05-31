@@ -167,7 +167,7 @@ class VideoplayerBar(bp.ButtonPanel):
             v.stop_play()            
             v.step_rev()            
         else:
-            print btask
+            print(btask)
             
     def reset_btn_toggle_bitmap(self):
         self.set_toggle('')

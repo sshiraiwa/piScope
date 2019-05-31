@@ -38,7 +38,7 @@ class FigCurve(FigObjGPHolder):
         '''
 
         self._objs=[]  ## for debug....        
-        if kywds.has_key("draggable"): 
+        if "draggable" in kywds: 
             self.setvar("draggable", kywds["draggable"])
             del kywds["draggable"]
         else: self.setvar("draggable", True)
@@ -318,7 +318,7 @@ class FigCurve(FigObjGPHolder):
     
     def make_newartist0(self,  pin, draw_arrow = True):
         p = [(item[0], item[1]) for item in pin]
-        codes, verts = zip(*p)
+        codes, verts = list(zip(*p))
         path = matplotlib.path.Path(verts, codes)
         a = PathPatch(path, facecolor='none', fill=False, 
                             edgecolor='black', alpha=1)

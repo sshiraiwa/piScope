@@ -97,7 +97,7 @@ class SettingParser(object):
             if nocheck or (name2 in rule):
                 rule[name2] = value
             else:
-                print('Undefined field :', name2, ' in rule ' + name)
+                print(('Undefined field :', name2, ' in rule ' + name))
             lc = lc+1
         return lc, rule
 
@@ -194,7 +194,7 @@ class iFigureSettingParser(SettingParser):
         if not os.path.exists(os.path.dirname(t)):
              self.mk_filepath_dir(os.path.dirname(t))
         else:
-             print('making directory', t)
+             print(('making directory', t))
              os.mkdir(t)
     def read_setting(self, mname, fromDefault=False):
         def_file, user_file = self.mname2file(mname)
@@ -231,7 +231,7 @@ if __name__ == '__main__':
             'port = 22',
             'host = transport']
    sp = SettingParser()
-   print(sp.read_file(lines=lines))
+   print((sp.read_file(lines=lines)))
 
 
    lines = ['version = 1',
@@ -250,7 +250,7 @@ if __name__ == '__main__':
 
    sp = SettingParser(rule_mode=1)
    sp.set_rule('student', {'name':'', 'age':16})
-   print(sp.read_file(lines=lines))
+   print((sp.read_file(lines=lines)))
 
    lines = ['version = 1', 
             'type = "proxy"',
@@ -284,7 +284,7 @@ if __name__ == '__main__':
    sp.set_rule('house', {})
    sp.set_rule('yard', {})
    sp.set_rule('toy', {})
-   print(sp.read_file(lines=lines))
+   print((sp.read_file(lines=lines)))
 
    lines = ['version = 1',
             'house',

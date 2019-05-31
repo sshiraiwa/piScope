@@ -5,6 +5,6 @@ def safename(value):
     """
     import unicodedata
     value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
-    value = unicode(re.sub('[^\w\s-]', '', value).strip().lower())
+    value = str(re.sub('[^\w\s-]', '', value).strip().lower())
     valee = re.sub('[-\s]+', '-', value)
     return value

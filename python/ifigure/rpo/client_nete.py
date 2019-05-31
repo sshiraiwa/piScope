@@ -11,4 +11,4 @@ nshost='cmodws30.psfc.mit.edu'
 nameserver=Pyro4.locateNS(host=nshost)
 uri=nameserver.lookup("proxy_nete")
 proxy=Pyro4.Proxy(uri)
-print(proxy.run_idl(shot=1120710012, time=1.))
+print((proxy.run_idl(shot=1120710012, time=1.)))

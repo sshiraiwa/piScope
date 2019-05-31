@@ -83,7 +83,7 @@ def make_treedicts(tree, this):
     dicttop = MDSPlusTree()
     top.setvar0(dicttop)
 
-    print("tree nodes :", len(tree))
+    print(("tree nodes :", len(tree)))
 
     for k in range(len(tree)-1): 
        arr=split_str(tree[k+1], '[\:.]')
@@ -174,7 +174,7 @@ def onOpenTree(self, ev = None,
 
     if server is None: server = this.getvar('mdsplus_server')
     if tree is None: tree=this.getvar("tree")
-    if shot is None: shot=long(this.getvar("shot"))
+    if shot is None: shot=int(this.getvar("shot"))
 
     from ifigure.mdsplus.fig_mds import MDSsession
     from ifigure.mdsplus.mds_job import MDSjob

@@ -114,7 +114,7 @@ class PyModuleD(PyContents, pypy_code.PyCode):
            self._first_load = False
       except:
         logging.exception("Module Method Call Failed")
-        print("PyModule: load_module failed:", file)
+        print(("PyModule: load_module failed:", file))
       return self
 
     def tree_viewer_menu(self):

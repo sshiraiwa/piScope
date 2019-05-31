@@ -47,7 +47,7 @@ class FigPlot(FigObj, XUser, YUser, ZUser, CUser):
             obj._decimate_limit = _decimate_limit
             return obj
 
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigObj.__new__(cls, *args, **kywds)
             obj = set_hidden_vars(obj)
             return obj
@@ -84,7 +84,7 @@ class FigPlot(FigObj, XUser, YUser, ZUser, CUser):
             if isinstance(v['cmap'], Colormap): v['cmap'] = v['cmap'].name
             kywds['cmap'] = v['cmap']
             del v['cmap']
-        for name in v.keys(): obj.setvar(name, v[name])
+        for name in list(v.keys()): obj.setvar(name, v[name])
         obj.setvar("kywds", kywds)
         return obj
 
@@ -95,7 +95,7 @@ class FigPlot(FigObj, XUser, YUser, ZUser, CUser):
         CUser.__init__(self)
 
         args = []
-        if not kywds.has_key('src'):
+        if 'src' not in kywds:
             kywds = self.getvar("kywds")
         super(FigPlot,self).__init__(*args, **kywds)
 
@@ -534,7 +534,7 @@ class FigPlot(FigObj, XUser, YUser, ZUser, CUser):
             self._use_decimate = False
             return False
         skip = x.size/10
-        ix = range(10)
+        ix = list(range(10))
         t = [x[ix*skip] - x[(ix+1)*skip] for ix in range(9)]
         #print t
         #print abs((max(t) - min(t))/np.mean(t))
@@ -811,7 +811,7 @@ class StepPlot(FigPlot):
     written in FigPLot
     '''
     def __new__(cls, *args, **kywds):
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigPlot.__new__(cls, *args, **kywds)
 #            obj = set_hidden_vars(obj)
             obj._use_decimate = False
@@ -838,7 +838,7 @@ class StepPlot(FigPlot):
         obj._mpl_cmd = mpl_cmd
         if (v["x"] is None and not isdynamic(v["y"])):
             v["x"] = np.arange(v["y"].shape[-1])
-        for name in v.keys(): obj.setvar(name, v[name])
+        for name in list(v.keys()): obj.setvar(name, v[name])
         obj.setvar("kywds", kywds)
         return obj
 
@@ -895,7 +895,7 @@ class TimeTrace(FigPlot):
    
     '''
     def __new__(cls, *args, **kywds):
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigPlot.__new__(cls, *args, **kywds)
 #            obj = set_hidden_vars(obj)
             obj._use_decimate = True
@@ -922,7 +922,7 @@ class TimeTrace(FigPlot):
         obj._mpl_cmd = mpl_cmd
         if (v["x"] is None and not isdynamic(v["y"])):
             v["x"] = np.arange(v["y"].shape[-1])
-        for name in v.keys(): obj.setvar(name, v[name])
+        for name in list(v.keys()): obj.setvar(name, v[name])
         obj.setvar("kywds", kywds)
         return obj
 

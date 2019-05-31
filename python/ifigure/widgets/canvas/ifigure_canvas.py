@@ -62,7 +62,7 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Ellipse, PathPatch
 import matplotlib.path
 import weakref
-import cPickle as pickle
+import pickle as pickle
 from ifigure.ifigure_config import *
 from ifigure.utils import geom as geom_util
 from ifigure.utils.geom import transform_point
@@ -355,7 +355,7 @@ class draghandler_curve_d(object):
            self.panel._figure.patches.remove(self.rb)
         self.rb = None
     def _add_patch(self):
-        codes, verts = zip(*self.pathdata)
+        codes, verts = list(zip(*self.pathdata))
         path = matplotlib.path.Path(verts, codes)
         self.rb = PathPatch(path, facecolor='none', 
                             figure=self.panel._figure, 
@@ -1140,7 +1140,7 @@ class ifigure_popup(wx.Menu):
 #        print 'set frame art'
         canvas = e.GetEventObject()
         for item in canvas.selection:
-            print item()
+            print(item())
             if item() is not None:
                 item().figobj.set_frameart(True)
         canvas.draw_all()
@@ -1160,7 +1160,7 @@ class ifigure_popup(wx.Menu):
 
     def onArrange(self, e):
         canvas = e.GetEventObject()        
-        print('arrange', e.ExtraInfo)
+        print(('arrange', e.ExtraInfo))
 
         dx=[0]*len(canvas.selection)
         dy=[0]*len(canvas.selection)
@@ -1390,7 +1390,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
       #self.Bind(wx.EVT_SIZE, self.HandleResize)
 
       from ifigure.ifigure_config import icondir
-      if len(bitmaps.keys()) == 0:
+      if len(list(bitmaps.keys())) == 0:
           for icon in bitmap_names:
               path=os.path.join(icondir, '16x16', icon)
               if icon[-3:]=='png':
@@ -1470,7 +1470,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
        self.sizer2.Add(self.canvas, 1, wx.EXPAND, 0)
        self.sizer2.Add(self.spacer2, 0)
 
-       rgba = [long(x*255) for x in self._figure.get_facecolor()]
+       rgba = [int(x*255) for x in self._figure.get_facecolor()]
        self.std_bg_color = self.TopLevelParent.GetBackgroundColour()
        self.TopLevelParent.SetBackgroundColour(rgba[0:3])
        self.spacer1.set_color(rgba[0:3])
@@ -1964,7 +1964,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
                                     for o in figax_list]))]
 
        if len(alist) == 0: return
-       zorder, figax_list = zip(*alist)
+       zorder, figax_list = list(zip(*alist))
        for figax in figax_list:
               for ax in figax._artists:
                   hit, extra = cpicker.axes_picker(ax, event)
@@ -2577,7 +2577,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
                   ax = figobj()._artists[0]
                   images.append(a) 
               else:
-                  print(type(a))
+                  print((type(a)))
        self._figure.lines += lines
        if ax is not None: 
            ax.collections += collections
@@ -3229,7 +3229,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
        if wx.GetApp().TopWindow.aconfig.setting['keep_text_as_text']:
              matplotlib.rcParams['text.usetex'] = True
              matplotlib.rcParams['ps.usedistiller'] = 'xpdf'
-             matplotlib.rcParams['font.family'] = [u'serif']
+             matplotlib.rcParams['font.family'] = ['serif']
              call_convert_to_tex_style_text(True)
 #             matplotlib.rcParams['ps.fonttype'] = 42
 
@@ -3251,7 +3251,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
                 self.GetTopLevelParent().save_animgif(filename = fname+'.gif')
             except:
                 import traceback
-                print(traceback.format_exc())    
+                print((traceback.format_exc()))    
             if (matplotlib.rcParams['text.usetex'] and
                 not org_rc[0]):
                 call_convert_to_tex_style_text(False)          
@@ -3266,7 +3266,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
                 self.GetTopLevelParent().save_multipdf(filename = fname+'.pdf')
             except:
                 import traceback
-                print(traceback.format_exc())
+                print((traceback.format_exc()))
             if (matplotlib.rcParams['text.usetex'] and
                 not org_rc[0]):
                 call_convert_to_tex_style_text(False)          
@@ -3293,7 +3293,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
                call_savefig_method(self, 'print_pdf', ret+'.pdf', dpi=image_dpi)
        except:
            import traceback
-           print(traceback.format_exc())
+           print((traceback.format_exc()))
 
        if (matplotlib.rcParams['text.usetex'] and
            not org_rc[0]):
@@ -3426,7 +3426,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
        except:
           print('Failed to create legend')
           import traceback
-          print(traceback.format_exc())
+          print((traceback.format_exc()))
           return
 
        ### registor paste action to history
@@ -3838,7 +3838,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
            self._line_insert_a = None
 
        p = [(item[0], item[1]) for item in path]
-       codes, verts = zip(*p)
+       codes, verts = list(zip(*p))
        path = matplotlib.path.Path(verts, codes)
        self._line_insert_a = PathPatch(path, facecolor='none', 
                             figure=self._figure, 
@@ -3951,7 +3951,7 @@ class ifigure_canvas(wx.Panel, RangeRequestMaker):
    def onKey3(self, evt):
        print('key_event')
    def dnd_motion(self, evt):
-       print('dnd motion', evt.xdata, evt.ydata)
+       print(('dnd motion', evt.xdata, evt.ydata))
        pass
 
    def _check_can_group(self):

@@ -2,14 +2,14 @@
 
 import socket
 import threading
-import SocketServer
+import socketserver
 import paramiko
 import os
 import MDSplus
 import binascii, sys
-import cPickle as pickle
+import pickle as pickle
 
-class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
+class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     
 #
 
@@ -20,11 +20,11 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
         param=data[1:]
 
         response = ''
-        print("Request " , data)
+        print(("Request " , data))
         if com == 'c': # connection request
            tree, shot, node=param.split(',')
            try:
-              self.t = MDSplus.Tree(tree, long(shot))
+              self.t = MDSplus.Tree(tree, int(shot))
               tn = self.t.getNode(node)
               self.t.setDefault(tn)
               response='ok'
@@ -38,15 +38,15 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
            node = a[2]
            expr = ','.join(a[3:])
            try:
-              self.t = MDSplus.Tree(tree, long(shot))
+              self.t = MDSplus.Tree(tree, int(shot))
               if node.strip() != '':
                  tn = self.t.getNode(node)
                  self.t.setDefault(tn)
               r =MDSplus.Data.compile(expr).evaluate().data() 
               sr=pickle.dumps(r)
               response = binascii.b2a_hex(sr)
-              print("sending data (length)", len(response), 'original :', type(sr))
-              print(type(binascii.a2b_hex(response)))
+              print(("sending data (length)", len(response), 'original :', type(sr)))
+              print((type(binascii.a2b_hex(response))))
 
            except Exception:
               response=str(sys.exc_info()[1])+','+str(sys.exc_info()[2])
@@ -55,13 +55,13 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
            r =MDSplus.Data.compile(param).evaluate().data() 
            sr=pickle.dumps(r)
            response = binascii.b2a_hex(sr)
-           print("sending data (length)", len(response), 'original :', type(sr))
-           print(type(binascii.a2b_hex(response)))
+           print(("sending data (length)", len(response), 'original :', type(sr)))
+           print((type(binascii.a2b_hex(response))))
         #response = "{}: {}".format(cur_thread.name, data)
 
         self.request.sendall(response+'\n')
 
-class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
 
 
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
     ip, port = server.server_address
 
-    print(ip, port)
+    print((ip, port))
     # Start a thread with the server -- that thread will then start one
     # more thread for each request
     server_thread = threading.Thread(target=server.serve_forever)
@@ -83,9 +83,9 @@ if __name__ == "__main__":
     #usr=os.getenv("USER")
     from ifigure.utils.get_username import get_username
     usr = get_username()
-    print("Server loop running in thread:", server_thread.name)
+    print(("Server loop running in thread:", server_thread.name))
 
-    raw_input()
+    input()
 
 
     server.shutdown()

@@ -42,7 +42,7 @@ class DebuggerInterpreter(IP):
 
         """
         try:
-            exec code in self._l_dict, self._g_dict
+            exec(code, self._l_dict, self._g_dict)
         except SystemExit:
             raise
         except:
@@ -51,7 +51,7 @@ class DebuggerInterpreter(IP):
             from code import softspace
             import sys            
             if softspace(sys.stdout, 0):
-                print
+                print()
 
 from ifigure.widgets.simple_shell import ShellBase
 class DebugShell(ShellBase):
@@ -144,7 +144,7 @@ class DebuggerPanel(wx.Panel):
                try:
 #                   print(eval(txt, self.frame.f_globals,
 #                                 self.frame.f_locals))
-                    exec compile(txt, 'text', 'exec')  in self.frame.f_globals, self.frame.f_locals
+                    exec(compile(txt, 'text', 'exec'), self.frame.f_globals, self.frame.f_locals)
                except:
                     print('evaluation failed')
 
@@ -166,8 +166,8 @@ class DebuggerPanel(wx.Panel):
            txt = str(self.txt.GetValue())
            if txt != '':
                try:
-                   print(eval(txt, self.frame.f_globals,
-                                   self.frame.f_locals))
+                   print((eval(txt, self.frame.f_globals,
+                                   self.frame.f_locals)))
                except:
                    print('evaluation failed')
        elif l == 'q':
@@ -228,12 +228,12 @@ class DebuggerPanel(wx.Panel):
            wx.Yield()
 
    def handle_user_return(self, frame, return_value):
-       print('return', frame, return_value,self._call_count)
+       print(('return', frame, return_value,self._call_count))
        if self._call_count > 0:
            self._call_count = self._call_count - 1
        else:
            self._status = 'stop'
-           print('exiting debug mode : return value = ', return_value)
+           print(('exiting debug mode : return value = ', return_value))
            self.exit_debug_mode()
 
    def handle_user_call(self, frame, return_value):
@@ -241,7 +241,7 @@ class DebuggerPanel(wx.Panel):
 
    def handle_user_exception(self, frame, exc_info):
        self._status = 'stop'
-       print('exiting debug mode : exception info = ', exc_info)
+       print(('exiting debug mode : exception info = ', exc_info))
        self.exit_debug_mode()
 
    def exit_debug_mode(self):         

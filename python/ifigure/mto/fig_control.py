@@ -14,7 +14,7 @@ class FigControl(object):
         try:
             m = getattr(self._cc_callback_obj(), self._cc_callback_name)
         except:
-            print('callback not found', self)
+            print(('callback not found', self))
             traceback.print_exc()                        
             return
         try:        

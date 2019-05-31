@@ -1,10 +1,18 @@
 #!/usr/bin/env python
 import smtplib
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEBase import MIMEBase
-from email.MIMEText import MIMEText
-from email.Utils import COMMASPACE, formatdate
-from email import Encoders
+try:
+    from email.MIMEMultipart import MIMEMultipart
+    from email.MIMEBase import MIMEBase
+    from email.MIMEText import MIMEText
+    from email.Utils import COMMASPACE, formatdate
+    from email import Encoders    
+except:
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.base import MIMEBase
+    from email.mime.text import MIMEText
+    from email.utils import formatdate
+    from email import encoders
+    
 import os, sys
 
 def checkPasswd(server, ssl_port=465, ssl_username='', ssl_passwd=''):
@@ -25,6 +33,7 @@ def sendMail(to, subject, text, files=[],server="mail1.psfc.mit.edu",
     msg = MIMEMultipart()
     msg['From'] = me
 #    msg['To'] = COMMASPACE.join(['shiraiwa@psfc.mit.edu'])
+    COMMASPACE = ', '
     msg['To'] = COMMASPACE.join(to)
     msg['Date'] = formatdate(localtime=True)
     msg['Subject'] = subject
@@ -40,7 +49,7 @@ def sendMail(to, subject, text, files=[],server="mail1.psfc.mit.edu",
         msg.attach(part)
  
     if ssl:
-       print(server, ssl_port)
+       print((server, ssl_port))
        smtp = smtplib.SMTP_SSL(server, ssl_port)
        smtp.login(ssl_username, ssl_passwd)
     else:
@@ -52,7 +61,7 @@ if __name__ == '__main__':
    if len(sys.argv[1:]) == 1:
       file = sys.argv[1:][0]
       if os.path.exists(file): 
-          print('sending : '+file)
+          print(('sending : '+file))
           file = os.path.abspath(file)
       sendMail(
            ["shiraiwa@psfc.mit.edu"],

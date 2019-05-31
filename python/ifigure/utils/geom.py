@@ -189,7 +189,7 @@ def area_intersection_x(x1, x2, y0, area, internal_only = False,
           ans =  np.array((p1 - q1)*(np.matrix((-p, q))**-1)).flatten()
       else:
           continue
-      if debug: print q1, q2, ans
+      if debug: print(q1, q2, ans)
       if 0. < ans[-1] <= 1.:
           if not internal_only or (internal_only and 
                                    (0. < ans[0] <= 1.)):
@@ -230,7 +230,7 @@ def area_intersection_y(x0, y1, y2, area, internal_only = False,
           ans =  np.array((p1 - q1)*(np.matrix((-p, q))**-1)).flatten()
       else:
           continue
-      if debug: print ans
+      if debug: print(ans)
       if 0. < ans[-1] <= 1.:
           if not internal_only or (internal_only and 
                                    (0. < ans[0] <= 1.)):
@@ -374,7 +374,7 @@ def s_path(path, idx = None):
     if idx is None:
         return cumsum
     else:
-        lidx = long(idx)
+        lidx = int(idx)
         didx = idx - lidx
         return cumsum[lidx] + norm_dpath[lidx] * didx
 '''

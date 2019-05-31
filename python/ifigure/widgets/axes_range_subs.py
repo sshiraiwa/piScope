@@ -352,7 +352,7 @@ class AdjustableRangeHolder(object):
             a = range0[0]; b = range0[1]
             if a != 0:
                si = a/abs(a)
-               ex = long(np.log10(abs(a)))
+               ex = int(np.log10(abs(a)))
 #               if (a/(10.**ex) % 1)== 0.:
                ai = (np.floor(a/(10.**ex)))*10.**ex
 #               else:
@@ -360,7 +360,7 @@ class AdjustableRangeHolder(object):
             else: ai = 0.
             if b != 0:
                si = b/abs(b)
-               ex = long(np.log10(abs(b)))
+               ex = int(np.log10(abs(b)))
                if (b/(10.**ex) % 1) == 0.:
                   bi = (np.floor(b/(10.**ex)))*10.**ex
                else:
@@ -436,7 +436,7 @@ class AdjustableRangeHolder(object):
                for m in ay.walk_member():
                    if m.is_suppress():continue
                    ax = m.get_xaxisparam()
-                   if newrange.has_key(ax):
+                   if ax in newrange:
                        xrange = newrange[ax]
                    else:
                        xrange = ax.range
@@ -465,11 +465,11 @@ class AdjustableRangeHolder(object):
                    if m.is_suppress():continue
                    ax = m.get_xaxisparam()
                    ay = m.get_yaxisparam()
-                   if newrange.has_key(ax):
+                   if ax in newrange:
                        xrange = newrange[ax]
                    else:
                        xrange = ax.range
-                   if newrange.has_key(ay):
+                   if ay in newrange:
                        yrange = newrange[ay]
                    else:
                        yrange = ay.range
@@ -498,11 +498,11 @@ class AdjustableRangeHolder(object):
                    if m.is_suppress():continue
                    ax = m.get_xaxisparam()
                    ay = m.get_yaxisparam()
-                   if newrange.has_key(ax):
+                   if ax in newrange:
                        xrange = newrange[ax]
                    else:
                        xrange = ax.range
-                   if newrange.has_key(ay):
+                   if ay in newrange:
                        yrange = newrange[ay]
                    else:
                        yrange = ay.range

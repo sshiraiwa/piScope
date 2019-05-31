@@ -1,5 +1,5 @@
 import multiprocessing as mp
-import threading, Queue, traceback
+import threading, queue, traceback
 import time, tempfile, wx, select
 from weakref import WeakKeyDictionary
 import ifigure.utils.debug as debug

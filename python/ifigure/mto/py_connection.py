@@ -37,7 +37,7 @@ class PyConnection(TreeDict):
     def setSetting(self, value):
         self.setvar('use_ssh', value[1][0])
         self.setvar('server', str(value[1][1][0]))
-        self.setvar('port', long(value[1][1][1]))
+        self.setvar('port', int(value[1][1][1]))
         self.setvar('user', str(value[1][1][2]))
         self.setvar('queue_type', str(value[2]))        
 
@@ -92,7 +92,7 @@ class PyConnection(TreeDict):
                  p = subprocess.Popen(args, stderr=subprocess.STDOUT,
                                       stdout = subprocess.PIPE, **kargs)
         except:
-            print(traceback.format_exc())
+            print((traceback.format_exc()))
 
         if not nowait:
             while p.poll() == None:
@@ -129,7 +129,7 @@ class PyConnection(TreeDict):
                  p = subprocess.Popen(args, stderr=subprocess.STDOUT,
                      stdout = subprocess.PIPE, **kargs)
         except:
-            print(traceback.format_exc())
+            print((traceback.format_exc()))
 
         if not nowait:
             while p.poll() == None:
@@ -158,13 +158,13 @@ class PyConnection(TreeDict):
             p = subprocess.Popen(args, stderr=subprocess.STDOUT,
                  stdout = subprocess.PIPE, **kargs)
         except:
-            print(traceback.format_exc())
-        print('a new process (id =' + str(p.pid) + ') is running')
+            print((traceback.format_exc()))
+        print(('a new process (id =' + str(p.pid) + ') is running'))
         if not nowait:
             while p.poll() == None:
                 #if isInMainThread(): wx.Yield()
                 time.sleep(sltime)
-            print(p.wait())
+            print((p.wait()))
         return p
 
 

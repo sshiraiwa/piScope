@@ -433,7 +433,7 @@ class HdfExportWindow(wx.Frame):
                         export_flag = flags,
                         filename = path,
                         verbose = True)
-            print('HDF export finished : '+path)
+            print(('HDF export finished : '+path))
         except:   
             dialog.showtraceback(parent = self,
                                txt='Failed to export HDF', 

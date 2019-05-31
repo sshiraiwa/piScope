@@ -153,7 +153,7 @@ def callback(parent, value, setting, gwparam):
 
     if not '_flag' in gs: gs['_flag'] = [[],[],[],[]]
     for m in range(4):
-             for key in value[m][0].keys():
+             for key in list(value[m][0].keys()):
                   if not key in gs:
                      gs[key] = [None]*4
                   gs[key][m] = value[m][0][key]

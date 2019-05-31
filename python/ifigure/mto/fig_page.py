@@ -346,10 +346,10 @@ class FigPage(FigObj):
         dx = [1./ncol]*ncol
         dy = [[1./nrow[k]]*nrow[k] for k in range(ncol)]
 
-        if kargs.has_key('dx'):
+        if 'dx' in kargs:
             dx = check_d(kargs["dx"], ncol)
             if dx is None: return             
-        if kargs.has_key('dy'):
+        if 'dy' in kargs:
             dy = check_d(kargs["dy"], nrow[0])
     
         areas0=[]

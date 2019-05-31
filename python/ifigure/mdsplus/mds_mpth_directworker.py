@@ -64,7 +64,7 @@ class DirectWorkerBase(object):
 
                       r2 = {}
                       for n in def_names:
-                          if r.has_key(n):
+                          if n in r:
                               if isinstance(r[n], ndarray) and can_compress:  r[n] = squeeze(r[n])
                               if (isinstance(r[n], ndarray) and
                                   r[n].size > 5e4 and len(r[n].shape) == 1 and

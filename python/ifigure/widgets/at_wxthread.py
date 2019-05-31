@@ -3,7 +3,7 @@
    the main thread.
 '''
 from functools import wraps
-import wx, Queue, threading
+import wx, queue, threading
 class CallError(object):
       pass
 def at_wxthread(func):
@@ -20,7 +20,7 @@ def at_wxthread(func):
         if t.name == 'MainThread':
            return func(*args, **kargs)
         else:
-           q = Queue.Queue()
+           q = queue.Queue()
            wx.CallAfter(func2, func,  q, *args, **kargs)
            value = q.get()
            if isinstance(value, CallError):

@@ -23,8 +23,8 @@ def load_module_file(file):
         mtime = os.path.getmtime(file)     
         return m, mtime
     except Exception:
-        print('Module loading failed: ', file)
-        print(traceback.format_exc())
+        print(('Module loading failed: ', file))
+        print((traceback.format_exc()))
 
     return None, 0
 
@@ -137,7 +137,7 @@ class AbsModule(object):
         return self._debug
 
     def load_module(self):
-        print('Loading Module File :', self._m_file)
+        print(('Loading Module File :', self._m_file))
         self.unbind_method()
         self._m_co, self._m_mtime = load_module_file(self._m_file)
         if self._m_co is not None:

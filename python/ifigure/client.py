@@ -24,17 +24,17 @@
         get('varname')
 
 '''
-import socket,subprocess,sys,shlex,cPickle
+import socket,subprocess,sys,shlex,pickle
 import binascii, threading, os
-import SocketServer
+import socketserver
 from ifigure.utils.cbook import pick_unused_port
 
-class ReceiverReqHandler(SocketServer.BaseRequestHandler):
+class ReceiverReqHandler(socketserver.BaseRequestHandler):
     def handle(self):
         rfile = self.request.makefile('r')
         response = rfile.readline().strip()
         rfile.close()
-        data = cPickle.loads(binascii.a2b_hex(response))
+        data = pickle.loads(binascii.a2b_hex(response))
         if data['type'] == 'data':
            import __main__
            text = '\n'
@@ -49,7 +49,7 @@ class ReceiverReqHandler(SocketServer.BaseRequestHandler):
            print((data['data']))
    
 
-class Receiver(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+class Receiver(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
 
 class Client(object):
@@ -93,7 +93,7 @@ class Client(object):
           server_thread.start()
        ip, port = Client.receiver.server_address
        print(('receiver :', ip,':', port))
-       message = cPickle.dumps(('r', ip, port))
+       message = pickle.dumps(('r', ip, port))
        self.send(message, noresponse=True)
 
    def shutdown(self):
@@ -124,7 +124,7 @@ class Client(object):
              rfile.close()
 #             response = sock.recv(1024)
 #             print len(response)
-             response = cPickle.loads(binascii.a2b_hex(response))
+             response = pickle.loads(binascii.a2b_hex(response))
        finally:
           sock.close()
        return response         
@@ -151,7 +151,7 @@ def server(param, host='localhost', port=None, exe=None):
         if c.host is None: return
         if c.port == 0: return
 
-        message = cPickle.dumps(('f','quit', tuple(), dict()))
+        message = pickle.dumps(('f','quit', tuple(), dict()))
         c = Client() 
         c.send(message, noresponse=True) 
         c.shutdown()
@@ -159,11 +159,11 @@ def server(param, host='localhost', port=None, exe=None):
 
 def check_connection():
     c = Client()    
-    message = cPickle.dumps(('c',))
+    message = pickle.dumps(('c',))
     print((c.send(message)))
 
 def make_testplot():
-    message = cPickle.dumps(('t','plot(range(10))'))
+    message = pickle.dumps(('t','plot(range(10))'))
     c = Client() 
     c.send(message) 
 
@@ -186,12 +186,12 @@ def _get_random_name():
 def _save_parameter_file(*args, **kargs):
     try:
         return sr
-    except IOError, error:
+    except IOError as error:
         return False
     
 def _send_message(command, *args, **kargs):
     try:
-       message = cPickle.dumps(('f', command, args, kargs))
+       message = pickle.dumps(('f', command, args, kargs))
     except  error:
        print('failed to save parameter file')
        return 
@@ -200,7 +200,7 @@ def _send_message(command, *args, **kargs):
 
 def _send_message_g(command, *args, **kargs):
     try:
-       message = cPickle.dumps(('g', command, args, kargs))
+       message = pickle.dumps(('g', command, args, kargs))
     except  error:
        print('failed to save parameter file')
        return 

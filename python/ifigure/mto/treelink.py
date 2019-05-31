@@ -104,4 +104,4 @@ if __name__ == '__main__':
      page.add_child("link", link)
      axes.add_child("plot", plot)
 
-     print(page.list_all())
+     print((page.list_all()))

@@ -70,7 +70,7 @@ DebugBreakPoint  = 21
 
 from ifigure.widgets.debugger_core import add_breakpoint, rm_breakpoint, has_breakpoint, get_breakpoint
 from ifigure.widgets.debugger import check_debugger_instance
-from syntax_styles import *
+from ifigure.widgets.syntax_styles import *
 
 def check_font_width():
     size = faces['size']
@@ -1223,7 +1223,7 @@ class ScriptEditor(wx.Panel):
            p.SetReadOnly(readonly)
         except UnicodeDecodeError:
            logging.exception("Opening File Failed. Ignoring invalid bytes")
-           p.SetText(unicode(txt, errors='ignore'))
+           p.SetText(str(txt, errors='ignore'))
            pass
         p.EmptyUndoBuffer()
         p.Colourise(0, -1)
@@ -1451,7 +1451,7 @@ class ScriptEditor(wx.Panel):
            idx = self.file_list.index(param["oldname"])
            self.file_list[idx]=param["newname"]
            ipage=self.nb.GetPageIndex(self.page_list[idx])
-           print(os.path.basename(param["newname"]))
+           print((os.path.basename(param["newname"])))
            self.nb.SetPageText(ipage, os.path.basename(param["newname"]),
                                doc_name = param["newname"])
            self.nb.SetPageToolTip(ipage, param["newname"])

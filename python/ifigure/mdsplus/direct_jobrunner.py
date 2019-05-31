@@ -21,7 +21,7 @@ try:
        a class for debuging
        '''
        def get(self, expr, *args, **kwargs):
-           print 'expression'+expr
+           print('expression'+expr)
            return Connection.get(self, expr, *args, **kwargs)
 except:
    traceback.print_exc()
@@ -146,7 +146,7 @@ class JobRunner(object):
             code = compile(expr, '<string>', 'exec')
             g = {}
             l = {}
-            exec code in self.g, self.r
+            exec(code, self.g, self.r)
             return 'ok'
          except:
             self.error = ['Scrip Error', expr, sys.exc_info()[0]]
@@ -166,7 +166,7 @@ class JobRunner(object):
                      #print tree, 
                      #print long(shot)
                      if tree != '':
-                         self.connection.openTree(tree, long(shot))
+                         self.connection.openTree(tree, int(shot))
                   except:
                      self.error = ['run error', traceback.format_exc()]
                      return None
@@ -241,7 +241,7 @@ class JobRunner(object):
                shot = job.params[1]
                try:
                   if tree != '':
-                      self.t = MDSplus.Tree(tree, long(shot))
+                      self.t = MDSplus.Tree(tree, int(shot))
                   if shot != self._shot:
                       expr = 'reset_private();reset_public();1'
 #                      r =MDSplus.Data.compile(expr).evaluate().data()

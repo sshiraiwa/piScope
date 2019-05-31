@@ -1,8 +1,8 @@
 def find_all_keys(d, key):
-    return [x for x in d.keys() if x.startswith(key+'(')]
+    return [x for x in list(d.keys()) if x.startswith(key+'(')]
 
 def find_idx(keys):
-    return [long((x.split('(')[1]).strip()[:-1]) for x in keys]
+    return [int((x.split('(')[1]).strip()[:-1]) for x in keys]
 
 def key_exists(d, key):
     return key in d or len(find_all_keys(d, key)) > 0

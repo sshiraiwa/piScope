@@ -16,14 +16,14 @@ def pull(dir1, dir2, dry_run = False):
                lines = out.split('\n')
                numc = len([1 for l in lines if l.startswith('changeset')])
                if numc > 0:
-                   print(str(numc) + ' is coming from ' + url)
+                   print((str(numc) + ' is coming from ' + url))
 
             except:
                if traceback.format_exc().find('no changes found') != -1:
-                   print(url + ' is updated')
+                   print((url + ' is updated'))
                    continue
                if traceback.format_exc().find('There is no Mercurial') != -1:
-                   print('no repo found in '+url)
+                   print(('no repo found in '+url))
                    continue
                traceback.print_exc()
                continue
@@ -49,14 +49,14 @@ def push(dir1, dir2, dry_run = False):
                lines = out.split('\n')
                numc = len([1 for l in lines if l.startswith('changeset')])
                if numc > 0:
-                   print(str(numc) + ' is coming from ' + url)
+                   print((str(numc) + ' is coming from ' + url))
 
             except:
                if traceback.format_exc().find('no changes found') != -1:
-                   print(url + ' is updated')
+                   print((url + ' is updated'))
                    continue
                if traceback.format_exc().find('There is no Mercurial') != -1:
-                   print('no repo found in '+url)
+                   print(('no repo found in '+url))
                    continue
                traceback.print_exc()
                continue

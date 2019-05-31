@@ -15,7 +15,7 @@ def window_to_bitmap(window):
     mdc = wx.MemoryDC(bitmap)
     mdc.Blit(0, 0, w, h, wdc, 0, 0)    
     data = np.fromstring(bitmap.ConvertToImage().GetData(), np.uint8)
-    print(data.reshape((h,w,3))[0,0,:])
+    print((data.reshape((h,w,3))[0,0,:]))
     return bitmap
 
 class CustomPanel(wx.Panel):
@@ -350,9 +350,9 @@ class test_frame(wx.Frame):
         self.Bind(EVT_CDS_CHANGED, self.onCDS_CHANGED)
         self.Bind(EVT_CDS_CHANGING, self.onCDS_CHANGING)
     def onCDS_CHANGED(self, evt):
-        print(evt.GetEventObject().GetValue())
+        print((evt.GetEventObject().GetValue()))
     def onCDS_CHANGING(self, evt):
-        print(evt.GetEventObject().GetValue())
+        print((evt.GetEventObject().GetValue()))
 
 
 if __name__ == '__main__':

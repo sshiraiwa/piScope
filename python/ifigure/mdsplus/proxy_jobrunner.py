@@ -1,6 +1,6 @@
 import sys, socket, shlex, threading, os, binascii, subprocess, time, tempfile
-import SocketServer, traceback
-import cPickle as pickle
+import socketserver, traceback
+import pickle as pickle
 from ifigure.utils.pickled_pipe import PickledPipe
 
 def pick_unused_port():
@@ -189,7 +189,7 @@ class JobRunner(object):
             code = compile(expr, '<string>', 'exec')
             g = globals()
             l = {}
-            exec code in self.g, self.r
+            exec(code, self.g, self.r)
             return 'ok'
         except:
             self.error = ['Scrip Error', expr, sys.exc_info()[0]]

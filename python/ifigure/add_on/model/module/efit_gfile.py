@@ -76,7 +76,7 @@ extname  = 'gfile_ext'
 
 def string_split_ig(s, sep):
    t=re.split(sep,s)
-   id=range(len(t))
+   id=list(range(len(t)))
    id.reverse()
    for i in id:
       if t[i]=='': del t[i]
@@ -226,13 +226,13 @@ def load_file(file=None):
    tmp=string_split_ig(line[49:], ' |,')
 
    header=line[:48]
-   idum=long(tmp[0])
-   mw=long(tmp[1])
-   mh=long(tmp[2])
+   idum=int(tmp[0])
+   mw=int(tmp[1])
+   mh=int(tmp[2])
    mw2 = mw
    if len(tmp)  == 4: 
       try:
-          mw2 = long(tmp[3])
+          mw2 = int(tmp[3])
           if mw2 == 0: mw2 = mw
       except:
           pass
@@ -254,8 +254,8 @@ def load_file(file=None):
    try:
       nbbbs,limitr=string_split_ig(readandstrip(f), ' |,')
    #print nbbbs, limitr
-      nbbbs=long(nbbbs) 
-      limitr=long(limitr)
+      nbbbs=int(nbbbs) 
+      limitr=int(limitr)
       if nbbbs is not 0:
           rzbbbs = load_matrix_form2020(f, nbbbs,2)
 
@@ -350,7 +350,7 @@ def load_file(file=None):
       if line.startswith('&'):
          s=string_split_ig(line, ' |,')
          sec=s[0][1:]
-         print 'making new sec ', sec, line.__repr__(), s
+         print('making new sec ', sec, line.__repr__(), s)
          nm[sec] = OrderedDict()
          if len(s) > 1:
             line = ' '.join(s[1:])
@@ -387,7 +387,7 @@ def load_file(file=None):
 #          s[0]=k[1]
 #          print s
 #          if s[0] is '': del s[0]
-          if debug != 0: print('create dict key', sec, varname)
+          if debug != 0: print(('create dict key', sec, varname))
           #print 'create dict key', sec, varname
           nm[sec][varname]=[]
           if s.endswith('/'):
@@ -441,7 +441,7 @@ def scale_p(self, factor=None):
       else:
          return
 
-   print('Pres scale by', str(factor))
+   print(('Pres scale by', str(factor)))
    td[:]["table"]["pres"]   *= factor
    td[:]["table"]["pressmid"]   *= np.abs(factor)
    td[:]["table"]["pressrz"] *= factor
@@ -463,7 +463,7 @@ def scale_b(self, factor=None):
       else:
          return
 
-   print('Bt scale by', str(factor))
+   print(('Bt scale by', str(factor)))
 
    td[:]["table"]["ffprim"] *= factor*factor
    td[:]["table"]["fpol"]   *= factor
@@ -486,7 +486,7 @@ def scale_i(self, factor=None):
       else:
          return
 
-   print('Ip scale by', str(factor))
+   print(('Ip scale by', str(factor)))
 
    td[:]["table"]["psirz"] *= factor
    td[:]["table"]["qpsi"]   *= np.abs(1./factor)
@@ -503,7 +503,7 @@ def onScaleIp(self, evt):
 def onScaleBt(self, evt):
     self.scale_b()
 def init(self, *args, **kargs):
-    if not kargs.has_key("src"):
+    if "src" not in kargs:
       self.onLoadFile(file = '')
 
 def load_gfile(obj):

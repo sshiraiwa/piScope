@@ -78,7 +78,7 @@ def init(self, *args, **kargs):
     obj.mk_owndir()
     nm = Namelist()
     obj.setvar0(nm)
-    if not kargs.has_key('src'):
+    if 'src' not in kargs:
        self.onLoadFile()
     else:
        try:
@@ -157,7 +157,7 @@ def interpret_line(line):
 
 def string_split_ig(s, sep):
    t=re.split(sep,s)
-   id=range(len(t))
+   id=list(range(len(t)))
    id.reverse()
    for i in id:
       if t[i]=='': del t[i]
@@ -251,7 +251,7 @@ def load_file(file=None):
 
                continue
             if sall[i].endswith('='):
-               print(sall[i])
+               print((sall[i]))
                i=i+1
                continue #'name='
             k=sall[i].split('=')
@@ -293,7 +293,7 @@ def load_namelistfile(obj):
         child.destroy()
 
     nm=load_file(file)
-    print('reading file', file)
+    print(('reading file', file))
     obj.setvar0(nm)
     mtime = os.path.getmtime(file)
     obj.setvar('namelist_mtime', mtime)
@@ -306,12 +306,12 @@ def tree2txt(self):
     td  = self.td
     var0= td[:]
     txt = []
-    for key0 in var0.keys():
+    for key0 in list(var0.keys()):
 
         txt.append(' &'+key0+'\n')
         var=var0[key0]
         
-        for key in var.keys():
+        for key in list(var.keys()):
             line = ' '+key+' = '
 
             for el in var[key]:
@@ -432,7 +432,7 @@ def onRmSec(self, e):
     ret, name = dialog.textselect(parent, 
                    "Select section name", 
                    "Remove Section...", 
-                    choices = var0.keys())
+                    choices = list(var0.keys()))
     if not ret: return  
 
     del var0[name] 
@@ -446,7 +446,7 @@ def onRenameSec(self, e):
     ret, name = dialog.textselect(parent, 
                    "Select section name", 
                    "Rename Section...", 
-                    choices = var0.keys())
+                    choices = list(var0.keys()))
     if not ret: return  
     ret, name1 = dialog.textentry(parent, 
                    "Enter new section name", 

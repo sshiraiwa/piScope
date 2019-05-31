@@ -30,9 +30,9 @@ from ifigure.mto.py_code import PySol
 
 name = 'case' + str(index)
 if sol.has_child(name):
-    print('removing ', name)
+    print(('removing ', name))
     sol.get_child(name=name).destroy()
-print('merging solution index=', index)
+print(('merging solution index=', index))
 ps=PySol()
 sol.add_child(name, ps)
 

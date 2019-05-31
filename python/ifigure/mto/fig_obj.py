@@ -26,7 +26,7 @@ from ifigure.mto.metadata import MetadataHolder
 import ifigure.utils.geom as geom
 import ifigure.events
 import logging, weakref, traceback
-import cPickle as pickle
+import pickle as pickle
 from matplotlib.lines import Line2D
 from ifigure.utils.cbook import isiterable
 import numpy as np
@@ -306,7 +306,7 @@ class FigObj(TreeDict, MetadataHolder):
         process keyword given to __init__
         store them to var
         '''
-        if kywds.has_key(name):
+        if name in kywds:
             self.setvar(name, kywds[name])
             del kywds[name]
         else: self.setvar(name, d)
@@ -391,7 +391,7 @@ class FigObj(TreeDict, MetadataHolder):
            self._drag_hl.figure.lines.remove(self._drag_hl)
            self._drag_hl = None
         self.del_artist(delall=True)
-        for key in self._attr.keys(): 
+        for key in list(self._attr.keys()): 
             self._attr[key]=None
         ### calles super class which kills children first
         super(FigObj, self).destroy(clean_owndir=clean_owndir)
@@ -920,7 +920,7 @@ class FigObj(TreeDict, MetadataHolder):
            obj=args[0]
            name = obj.name
 
-        if not kargs.has_key('keep_zorder'):kargs['keep_zorder']=False
+        if 'keep_zorder' not in kargs:kargs['keep_zorder']=False
 
         figpage = self.get_figpage()
         if not 'z_base' in kargs:
@@ -963,8 +963,8 @@ class FigObj(TreeDict, MetadataHolder):
               return tuple([self._attr.get(n, None) for n in name])
            except:
               import sys, traceback
-              print("FigObj::getp error:", sys.exc_info()[0])
-              print(traceback.format_exc())
+              print(("FigObj::getp error:", sys.exc_info()[0]))
+              print((traceback.format_exc()))
 #              print "fig obj att not found "+name
               return [None]*len(name)
        else:
@@ -982,7 +982,7 @@ class FigObj(TreeDict, MetadataHolder):
 #          print "fig obj att not found "+name
           return None
     def hasp(self, name):
-        return self._attr.has_key(name)
+        return name in self._attr
 
 
      
@@ -1093,10 +1093,10 @@ class FigObj(TreeDict, MetadataHolder):
         
     def onShowAtt(self, e):
         from matplotlib.artist import getp
-        for key in self._attr.keys():
-             print(key, type(self._attr[key]))
+        for key in list(self._attr.keys()):
+             print((key, type(self._attr[key])))
         for a in self._artists:
-             print(getp(a))
+             print((getp(a)))
 
     def onForceUpdate(self, evt):
         print('calling forced update.... check if it is necessary')
@@ -1174,8 +1174,8 @@ class FigObj(TreeDict, MetadataHolder):
            box=a.get_window_extent(a.figure._cachedRenderer)
            return box.xmin, box.xmax, box.ymin, box.ymax
         except:
-           print('error in get_artist_extent for ', a)
-           print(traceback.format_exc())
+           print(('error in get_artist_extent for ', a))
+           print((traceback.format_exc()))
            return [None]*4
         return [None]*4
 
@@ -1306,8 +1306,8 @@ class FigObj(TreeDict, MetadataHolder):
                d = (float(self._st_extent[3]-self._st_extent[2])/
                     float(self._st_extent[1]-self._st_extent[0]))     
                dy = float(rec[1]-rec[0])*d
-               if ((loc & 4) != 0): rec[2] = long(rec[3]-dy)
-               if ((loc & 8) != 0): rec[3] = long(rec[2]+dy)
+               if ((loc & 4) != 0): rec[2] = int(rec[3]-dy)
+               if ((loc & 8) != 0): rec[3] = int(rec[2]+dy)
 
             self._drag_rec = rec
             scale = geom.calc_scale(rec, self._st_extent)
@@ -1471,7 +1471,7 @@ class FigObj(TreeDict, MetadataHolder):
            pass
 #           print "no loaded property....artist was not realized when saved?"
 #        print(loaded_prop)
-        if val.has_key("format"):
+        if "format" in val:
            if val["format"]==2:
               attr=pickle.load(fid)
               for k in attr:
@@ -1520,7 +1520,7 @@ class FigObj(TreeDict, MetadataHolder):
        return vals
 
     def set_artist_property(self, a, vals):
-       for key in vals.keys():
+       for key in list(vals.keys()):
 #          if isMPL2 and key == 'axis_bgcolor': key = 'facecolor'           
           if hasattr(a, 'set_'+key):
               (getattr(a, 'set_'+key))(vals[key])
@@ -1534,7 +1534,7 @@ class FigObj(TreeDict, MetadataHolder):
 #   set artist property
 #
     def mpl_set(self, name, *value, **kargs):
-        if kargs.has_key("ia"):
+        if "ia" in kargs:
             ia = kargs["ia"]
         else:
             ia = 0

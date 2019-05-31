@@ -6,28 +6,28 @@ import numpy as np
 import traceback
 
 def check_prop_read(obj):
-   print('read property test :' + str(obj))
+   print(('read property test :' + str(obj)))
    props = property(obj)
    ret = {}
    for prop in props:
        try:
            val = property(obj, prop)
-           print(str(prop)+ ' : ' + str(val))
+           print((str(prop)+ ' : ' + str(val)))
        except:
-           print('reading '+str(prop) + ' failed')
+           print(('reading '+str(prop) + ' failed'))
            traceback.print_exc()
            return ret
        ret[prop] = val
    return ret
 
 def check_prop_write(obj, data):
-    print('write property test :' + str(obj))
-    for prop in data.keys():
+    print(('write property test :' + str(obj)))
+    for prop in list(data.keys()):
        try:
-           print(str(prop)+ ' : ' + str(data[prop]))           
+           print((str(prop)+ ' : ' + str(data[prop])))           
            property(obj, prop, data[prop])
        except:
-           print('writinging '+str(key) + ' failed')
+           print(('writinging '+str(key) + ' failed'))
 
            
 def test_ax():       

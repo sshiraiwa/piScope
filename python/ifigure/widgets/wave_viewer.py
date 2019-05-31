@@ -163,7 +163,7 @@ class WaveViewer(VideoBookPlayer):
         try:
            o=FigQuiver(*args, **kwargs)
         except ValueError as x:
-           print(x.message)
+           print((x.message))
            return
         if o.getvar('u').dtype.name.startswith('complex'):
             convert_figobj(o)

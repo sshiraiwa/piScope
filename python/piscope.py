@@ -201,7 +201,7 @@ if __name__ == '__main__':
        ifig_app.use_server()
        process_server_request = True
        port = server.info()[3]
-       print('remote port is open : port = '+ str(port) + '\n')
+       print(('remote port is open : port = '+ str(port) + '\n'))
 
    ###  call tempdir_clean when ifig_app is being deleted
    class TempdirObj(object):

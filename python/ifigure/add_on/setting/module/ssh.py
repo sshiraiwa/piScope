@@ -54,8 +54,8 @@ def set_td_var(td, server=None, port=None,
                    rport=None, mode=None, 
                    rserver=None):
     if server is not None: td.setvar("server",str(server))
-    if port is not None: td.setvar("port",long(port))
-    if rport is not None: td.setvar("rport",long(rport))
+    if port is not None: td.setvar("port",int(port))
+    if rport is not None: td.setvar("rport",int(rport))
     if mode is not None: td.setvar("mode",str(mode))    
     if rserver is not None: td.setvar("rserver",str(rserver))    
 
@@ -108,7 +108,7 @@ def onRec(self, file=None, rfile=None, rdir=None):
     p=subprocess.Popen(shlex.split(command), stderr=subprocess.STDOUT,
                  stdout = subprocess.PIPE)
     p.wait()
-    print('stdout', p.stdout.read())     
+    print(('stdout', p.stdout.read()))     
 
 def onExec(self, e=None, command=None, wait=True):
     if command is None: return 
@@ -124,7 +124,7 @@ def onExec(self, e=None, command=None, wait=True):
        while p.wait() == None:
            wx.SafeYield()
            time.sleep(0.25)
-    print('stdout', p.stdout.read())
+    print(('stdout', p.stdout.read()))
 
 def onSend(self, file=None, rdir=None, rfile=None):
     if self.td._status != 'connected':
@@ -155,14 +155,14 @@ def onSend(self, file=None, rdir=None, rfile=None):
 
 
     p.wait()
-    print('stdout', p.stdout.read())
+    print(('stdout', p.stdout.read()))
 
     #scp_paramiko('localhost', port, file, rfile)
     
     command='scp -P '+str(port)+ ' '+str(file)+ ' localhost:'+rfile
     print(command)
     subprocess.Popen(command, shell=True)
-    print(p.wait())
+    print((p.wait()))
 
 def onClose(self):
     if hasattr(self, 'p'):

@@ -23,9 +23,9 @@ worker = args[1]
 index  = args[0]
 
 #sol.aquire_lock()
-print('merging solution index=', index)
-print('worker', worker)
-print('solution', sol)
+print(('merging solution index=', index))
+print(('worker', worker))
+print(('solution', sol))
 
 sol
 from ifigure.mto.py_code import PySol

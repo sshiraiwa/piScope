@@ -141,7 +141,7 @@ mm2 = [['size', '10',  104,  s_fontsize],
        ['format', '%1.3f',   0, {}],
        ['skip', '0', 24,
         {"minV": 0.,"maxV": 5., "val" : 0, "res" : 1, "text_box" : True}],]
-init_v = [8.0, (False, [(0.0, 0.0, 0.0, 1.0)]), True, 5.0, u'%1.3f', '0']
+init_v = [8.0, (False, [(0.0, 0.0, 0.0, 1.0)]), True, 5.0, '%1.3f', '0']
 s_decimate = {"text": 'on'}
 listparam['decimate'] = ["decimate", True,  3, s_decimate, 'decimate', 2]
 
@@ -446,7 +446,7 @@ class base_artist_widget(object):
    def set_artist_property(self, evt):
        ### routine to set property of artist based on
        ### evt happend on aritst_widgets
-       print("debug", "set_artist_property", self)
+       print(("debug", "set_artist_property", self))
        pass
 
    def set_target_artist(self, a, td = None):
@@ -1120,7 +1120,7 @@ class artist_widgets(wx.Panel):
 
     def switch_panel(self, mode):
     
-       if not self.panels.has_key(mode): return False
+       if mode not in self.panels: return False
        if self.mode == mode: return True
        if self.mode != '':
           self.panels[self.mode].Hide()
@@ -1237,7 +1237,7 @@ class panel1(artist_widgets):
             self.GetTopLevelParent().canvas._figure.figobj):
            self.enable(False)
            return
-        if self.panels.has_key(mode):
+        if mode in self.panels:
            if self.mode == mode: self.enable(True)
            self.panels[mode].set_value(self.artists[0]())
            self.panels[mode].set_target_artist(self.artists[0]())
@@ -1247,7 +1247,7 @@ class panel1(artist_widgets):
     def change_artist_panel(self, figobj):
         name = figobj.get_namebase()
 
-        if not self.panels.has_key(name):
+        if name not in self.panels:
            if name in panel1.plistd:
                self.append_panel(name)
            else:

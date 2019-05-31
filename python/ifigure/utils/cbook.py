@@ -18,7 +18,7 @@ from ifigure.utils.wx3to4 import menu_Append, wxBitmapFromImage, wxCursorFromIma
 
 def is_safename(txt):
     try:
-       exec txt + '= 3' in {}, {}
+       exec(txt + '= 3', {}, {})
     except:
        return False
     return True
@@ -34,15 +34,15 @@ def text_repr(val):
         else:
            text = val.__repr__()
     elif isinstance(val, dict):
-        if len(val.keys()) > 5:
-           text = ({key:val[key] for key in val.keys()[0:5]}.__repr__())[:-1]+'...'
+        if len(list(val.keys())) > 5:
+           text = ({key:val[key] for key in list(val.keys())[0:5]}.__repr__())[:-1]+'...'
         else:
            text = val.__repr__()
     elif isinstance(val, np.ndarray):
         text = '**data**'
     elif hasattr(val, '__len__'):
        try:
-          if (len(val) >10 and not isinstance(val, str) and not isinstance(val, unicode)): 
+          if (len(val) >10 and not isinstance(val, str) and not isinstance(val, str)): 
               text = '**data**'
           else:
               text = val.__repr__()
@@ -118,7 +118,7 @@ def pil_to_image(pil, alpha=True):
     #import Image
     """ Method will convert PIL Image to wx.Image """
     if alpha:
-        image = apply(wxEmptyImage, pil.size )
+        image = wxEmptyImage(*pil.size)
         image.SetData( pil.convert( "RGB").tostring() )
         image.SetAlphaData(pil.convert("RGBA").tostring()[3::4])
     else:
@@ -149,7 +149,7 @@ def image_to_pil(image):
             data = str(data)
     pil = Image.frombytes('RGB', (image.GetWidth(), image.GetHeight()),
                           data)
-    print pil
+    print(pil)
     return pil
 
 
@@ -249,7 +249,7 @@ class ImageFiles(object):
      idx=ImageFiles._list.Add(bm)
      idx2=ImageFiles._list.Add(bm3)
      if self.IsOk(idx) is False:
-        print("can not read "+fpath)
+        print(("can not read "+fpath))
         idx = -1
         idx2 = -1
      return idx, idx2
@@ -274,12 +274,12 @@ def LoadImageFile(path, fname):
 
 def Write2Main(val, name):
      import __main__
-     print("writing variable "+name+" to __main__")
-     exec '__main__.'+name+'=val'
+     print(("writing variable "+name+" to __main__"))
+     exec('__main__.'+name+'=val')
 
 def ReadFromMain(name):
      import __main__
-     print("writing variable "+name+" from __main__")
+     print(("writing variable "+name+" from __main__"))
      return eval('__main__.'+name)
 
 def FindFrame(w):
@@ -293,12 +293,12 @@ def GetNextName(keys, header):
        if key.startswith(header+'_'):
           a=key[len(header)+1:]
           if a.isdigit():
-             num.append(long(a))
+             num.append(int(a))
           continue
        if key.startswith(header):
           a=key[len(header):]
           if a.isdigit():
-             num.append(long(a))
+             num.append(int(a))
           continue
     if len(num)==0:
        return header+'1'
@@ -316,7 +316,7 @@ def MoveItemInList(l, i1,i2):
 
 def ClassNameToFile(s):
    pos = [i for i,e in enumerate(s+'A') if e.isupper()]
-   parts = [s[pos[j]:pos[j+1]] for j in xrange(len(pos)-1)]
+   parts = [s[pos[j]:pos[j+1]] for j in range(len(pos)-1)]
    return '_'.join(parts).lower()
 
 def FileNameToClass(path):
@@ -647,7 +647,7 @@ def BezierHitTest(path, x0, y0):
     i = 0
     for seg in segpath:
        p = [(item[0], item[1]) for item in seg]
-       codes, verts = zip(*p)
+       codes, verts = list(zip(*p))
        obj = matplotlib.path.Path(verts, codes)
        a = PathPatch(obj)
        xy= a.get_verts()
@@ -760,7 +760,7 @@ def parseStr(x0):
    num = 1
    if x0.find('*') != -1:
       x = x0.split('*')[1]
-      num = long(x0.split('*')[0])
+      num = int(x0.split('*')[0])
    else:
       x = x0
 
@@ -814,7 +814,7 @@ def isiterable(obj):
     return True
 
 def isstringlike(x):
-    return  (isinstance(x, str) or isinstance(x, unicode))
+    return  (isinstance(x, str) or isinstance(x, str))
 
 def nd_iter(x):
     if x.size: return x
@@ -842,7 +842,7 @@ def isndarray(obj):
 def GetModuleDir(mname):
     import sys
     namelist=mname.split('.')
-    if sys.modules.has_key(namelist[0]) is False:
+    if (namelist[0] in sys.modules) is False:
        try:
           top= __import__(namelist[0], globals(), locals(), [], -1)
        except Exception:
@@ -868,7 +868,7 @@ def LoadScriptFile(file):
     try:
        code=compile(txt, file, 'exec')
     except:
-       print(traceback.format_exc())
+       print((traceback.format_exc()))
        raise
     return txt, code, mtime
 
@@ -898,7 +898,7 @@ def LaunchEmacs(file):
     os.system(txt)
 
 def ProcessKeywords(kywds, name, value=None):
-    if kywds.has_key(name):
+    if name in kywds:
          value = kywds[name]
          del kywds[name]
     return value, kywds
@@ -951,7 +951,7 @@ def tex_escape(text):
         '<': r'\textless',
         '>': r'\textgreater',
     }
-    regex = re.compile('|'.join(re.escape(unicode(key)) for key in sorted(conv.keys(), key = lambda item: - len(item))))
+    regex = re.compile('|'.join(re.escape(str(key)) for key in sorted(list(conv.keys()), key = lambda item: - len(item))))
     return regex.sub(lambda match: conv[match.group()], text)
 
 def escape_split(s, delim):
@@ -998,7 +998,7 @@ def walk_OD_tree(od, basekey=''):
     walk OrdereDictionary tree
     '''
     import collections
-    for key in od.keys():
+    for key in list(od.keys()):
         if isinstance(od[key], collections.OrderedDict):
            if basekey == '':
                basekey2 = key
@@ -1037,19 +1037,19 @@ class DictDiffer(object):
         self.show_detail()
 
     def show_detail(self):
-       print("Added:", self.added())
+       print(("Added:", self.added()))
        for item in  self.added():
-          print(item, ':', self.current_dict[item])
+          print((item, ':', self.current_dict[item]))
 
-       print("Removed:", self.removed())
+       print(("Removed:", self.removed()))
        for item in  self.removed():
-           print(item, ':', self.past_dict[item])
+           print((item, ':', self.past_dict[item]))
 
-       print("Changed:", self.changed())
+       print(("Changed:", self.changed()))
        for item in  self.changed():
-           print(item, ':', self.current_dict[item], self.past_dict[item])
+           print((item, ':', self.current_dict[item], self.past_dict[item]))
 
-       print("Unchanged:", self.unchanged())
+       print(("Unchanged:", self.unchanged()))
 
 
     def added(self):

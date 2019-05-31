@@ -65,7 +65,7 @@ extname  = 'nc4_ext'
 def init(self, *args, **kargs):
     #   a function called when py_module is initialized
     self.td.mk_owndir()
-    if not kargs.has_key('src'):
+    if 'src' not in kargs:
        self.onLoadFile()
     #self.onLoadFile()
 
@@ -141,7 +141,7 @@ def write_file(td, filename='/home/shiraiwa/test.nc',
            variable[:] = nm["variables"][key]._data
 
     rootgrp.close() 
-    print('write NC file completed. ' + filename)       
+    print(('write NC file completed. ' + filename))       
    
 def load_file(fname, check_format = False):
     import subprocess, shlex
@@ -157,13 +157,13 @@ def load_file(fname, check_format = False):
        fname2=fname[:-3]
 #       print fname2
        if not os.path.exists(fname2): 
-           print('!!!!!!!!!!!! netcdf file is not found', fname2)
+           print(('!!!!!!!!!!!! netcdf file is not found', fname2))
            return
        g = Dataset(fname2, 'r')
     else:
 #       print fname
        if not os.path.exists(fname): 
-           print('!!!!!!!!!!!! netcdf file is not found', fname)
+           print(('!!!!!!!!!!!! netcdf file is not found', fname))
            return
        g = Dataset(fname, 'r')
     if check_format:
@@ -216,7 +216,7 @@ def onCheckFormat(self, e=None):
                            pathname=pathname)
     if file == '': return
     format = load_file(file, check_format = True)
-    print format
+    print(format)
 
 def onUpdateTree(self, e=None):
     obj = self.td

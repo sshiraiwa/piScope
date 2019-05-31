@@ -70,11 +70,11 @@ def select_unique_properties_all(page, dataset, flags):
            flags[key] = False
 
 def set_all_properties_all(flags, value):
-    keys = flags.keys()
+    keys = list(flags.keys())
     for labels in keys:
         if len(labels) < 2: continue
         if labels[1] == 'property': flags[labels] = value
-    keys = flags.keys()        
+    keys = list(flags.keys())        
     for labels in keys:
         if not (labels[0], 'property') in flags:
             flags[(labels[0], 'property')] = value
@@ -134,7 +134,7 @@ def build_data(page, export_flag = None,
             dd = obj.export()
         except NotImplementedError:
             if verbose:            
-                print(name + ' does not have data to export')
+                print((name + ' does not have data to export'))
         except:
             print('Unexpected error')
             raise
@@ -147,8 +147,8 @@ def build_data(page, export_flag = None,
             obj.assign_default_metadata()
             obj.update_data_metadata()
             if verbose:
-                txt = ['member '+ str(i) + ' exprot ' + ','.join(d.keys()) for i, d in enumerate(dd)]
-                print(name + ' : ' + ','.join(txt))
+                txt = ['member '+ str(i) + ' exprot ' + ','.join(list(d.keys())) for i, d in enumerate(dd)]
+                print((name + ' : ' + ','.join(txt)))
         try:
             props = get_all_properties(obj)
         except:
@@ -190,12 +190,12 @@ def hdf_data_export(page = None,
     #rootgrp = Dataset(filename, "w", format="NETCDF4")
     
     import time
-    meta = metadata[metadata.keys()[0]]
+    meta = metadata[list(metadata.keys())[0]]
     meta['description'] = "Figure data exported from piScope"
     meta['date']= time.ctime(time.time())
     for key in six.iterkeys(meta):
         rootgrp.attrs[key] = str(meta[key])
-    metadata[metadata.keys()[0]] = {}
+    metadata[list(metadata.keys())[0]] = {}
 
     for key in six.iterkeys(data):
         labels = (key, )
@@ -203,7 +203,7 @@ def hdf_data_export(page = None,
             not export_flag[labels]): continue
         key_grp = rootgrp.create_group(key)
         
-        data_keys = [k for k in  data[key].keys() if k.startswith('data')]
+        data_keys = [k for k in  list(data[key].keys()) if k.startswith('data')]
         for i, k in enumerate(data_keys):
             if len(data_keys) > 1:
                 data_grp = key_grp.create_group(k)

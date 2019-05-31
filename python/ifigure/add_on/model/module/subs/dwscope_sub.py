@@ -53,7 +53,7 @@ def import_dwscope(file):
            line = f.readline()
            print(line)
        except Exception:
-           print(sys.exc_info())
+           print((sys.exc_info()))
     f.close()
     
 def onLoadFile(self_obj):

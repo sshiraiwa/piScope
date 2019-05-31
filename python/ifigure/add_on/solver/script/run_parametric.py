@@ -33,12 +33,12 @@
 def modifier(worker, name, param):
 
     print('Running modifier')
-    print('working on model directory ...', model)
+    print(('working on model directory ...', model))
     for i in range(len(name)):
-       print('appling new parameter...', name[i], param[i])
+       print(('appling new parameter...', name[i], param[i]))
        worker.parameters.setvar(name[i], param[i])
 
-import Queue, threading, weakref, wx
+import queue, threading, weakref, wx
 import ifigure.events
 
 renew_model_each_time = True
@@ -76,7 +76,7 @@ def run_workers(workers, sol):
         method(idx, w, sol)
         queue.put(w)
 
-    q = Queue.Queue()
+    q = queue.Queue()
     solver._queue = q
     finished = 0
     current = 0
@@ -110,8 +110,8 @@ def run_workers(workers, sol):
                 if o._thread_name == t: 
                    w = o
                    break
-        except Queue.Empty:
-            print('not respond', finished)
+        except queue.Empty:
+            print(('not respond', finished))
             continue
         if t == 'abort job': 
              abroted = True
@@ -156,7 +156,7 @@ if solver._num_worker < 1:
         name, case_xxx = xxx
         rmodel = case_xxx.get_child(name = rname)
         model = rmodel.resolve_td_path(rpath)
-        print(case_xxx, model)
+        print((case_xxx, model))
         if model is not None:
              solver.apply_modifier(modifier, case_xxx, k)
              model.Run()

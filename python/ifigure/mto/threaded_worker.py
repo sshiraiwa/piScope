@@ -4,7 +4,7 @@
 #      in model execution.
 #
 
-import time, ifigure, wx, Queue, threading
+import time, ifigure, wx, queue, threading
 from ifigure.utils.event_driven_thread2 import get_thread, send_event
 def c_thread():
     import threading
@@ -43,7 +43,7 @@ class ThreadedWorker(object):
         '''
         self._initialize_waitlist()
 
-        if wait is not None: return_queue = Queue.Queue()   
+        if wait is not None: return_queue = queue.Queue()   
         t, queue = get_thread(return_queue)
         t._verbose = self._run_verbose
         trigger = t.bind_init(self, self._doJob1)
@@ -129,7 +129,7 @@ class ThreadedWorker(object):
 
         name = self.get_full_path()
         if self._run_verbose:
-            print('performing ' + name + '.job1 in ' + c_thread().name)
+            print(('performing ' + name + '.job1 in ' + c_thread().name))
         self._status = 'running...'
         app = wx.GetApp().TopWindow
 #        print 'in do job1', self, threading.current_thread().name
@@ -151,7 +151,7 @@ class ThreadedWorker(object):
 
         name = self.get_full_path()
         if self._run_verbose:
-            print('performing ' + name + '.job2 in ' + c_thread().name)
+            print(('performing ' + name + '.job2 in ' + c_thread().name))
 
         send_event(name + '.job2_done')
 

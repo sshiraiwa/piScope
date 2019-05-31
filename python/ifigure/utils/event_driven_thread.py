@@ -1,8 +1,8 @@
-import time, weakref, threading, Queue
+import time, weakref, threading, queue
 
 queues = []
 def get_thread():
-    queues.append(Queue.Queue())
+    queues.append(queue.Queue())
     return EventDrivenThread(queues[-1]), queues[-1]
 def send_event(event, t=None):
     if t is None: 
@@ -54,16 +54,16 @@ class EventDrivenThread(threading.Thread):
            else:
                event = self.queue.get(False)
                print(event)
-               print(self.events)
+               print((self.events))
                if event in self.events:
-                   print('calling method for ', event)
+                   print(('calling method for ', event))
                    for m in self.events[event]:
                        m(event)
         remove_queue(self.queue)
         send_event(self.finish_event)
         self.queue = None
         self.events = None
-        print('Exiting...', self.name)
+        print(('Exiting...', self.name))
 
     def onQuitThread(self, e):
         self.flag = False

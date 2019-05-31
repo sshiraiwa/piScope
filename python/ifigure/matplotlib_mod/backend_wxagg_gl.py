@@ -5,7 +5,6 @@ import wx
 
 import weakref
 import array
-from scipy.misc import imresize
 from ctypes import sizeof, c_float, c_void_p, c_uint, string_at
 
 import matplotlib
@@ -27,10 +26,10 @@ isMPL_before_1_2 = LooseVersion(matplotlib.__version__) < LooseVersion("1.2")
 use_gl_12 = True
 def load_glcanvas(debug = False):
     if wx.__version__[0] == '4' and not use_gl_12:
-       from glcanvas_15 import MyGLCanvas      
+       from ifigure.matplotlib_mod.glcanvas_15 import MyGLCanvas      
        if debug: dprint1('loading glcanvas15')
     else:
-       from glcanvas_12 import MyGLCanvas
+       from ifigure.matplotlib_mod.glcanvas_12 import MyGLCanvas
        if debug: dprint1('loading glcanvas12')       
     return MyGLCanvas
  

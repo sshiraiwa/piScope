@@ -21,7 +21,7 @@ from ifigure.widgets.canvas.file_structure import *
 
 import logging, os, weakref, time, threading
 import ifigure.utils.cbook as cbook
-import cPickle as pickle
+import pickle as pickle
 
 from ifigure.mto.treedict  import TreeDict
 from ifigure.mto.fig_obj   import FigObj
@@ -203,7 +203,7 @@ class MDSsession(object):
                    extra[key+'_catalog'] = self.result[key]
                    self.result[key] = self.result[key].restore()
                except:
-                   print(traceback.format_exc())
+                   print((traceback.format_exc()))
                    self.result['error message'] = ['failed to file transfar']           
        for key in extra: self.result[key] = extra[key]
        self.done = True
@@ -245,7 +245,7 @@ def_plot_options = {'plot': (('',), {'color':'auto',
 
 class FigMds(FigGrp):
     def __init__(self, *args, **kargs):
-        if kargs.has_key('dwplot'):
+        if 'dwplot' in kargs:
            dwplot = kargs['dwplot']
            del(kargs['dwplot'])
         else:
@@ -274,7 +274,7 @@ class FigMds(FigGrp):
 
     def import_dwplot(self, dwplot):
         def read_dwplot(name, dwplot):
-            if dwplot.has_key(name): 
+            if name in dwplot: 
                 return dwplot[name]
             return ''
  
@@ -285,13 +285,13 @@ class FigMds(FigGrp):
         ## this is an option to generate FigXXX
         plot_options = self.getvar('plot_options')
         if 'show_mode' in dwplot:
-           if long(dwplot['show_mode']) == 2:
+           if int(dwplot['show_mode']) == 2:
                plot_options['timetrace'] = (('-o',), 
                                        def_plot_options['timetrace'][1].copy())
                plot_options['stepplot'] = (('-o',), 
                                        def_plot_options['stepplot'][1].copy())
 
-           elif long(dwplot['show_mode']) == 1:
+           elif int(dwplot['show_mode']) == 1:
                plot_options['timetrace'] = (('s',),
                                        def_plot_options['timetrace'][1].copy())
                plot_options['stepplot'] = (('s',), 
@@ -692,7 +692,7 @@ class FigMds(FigGrp):
                   ana.result['shot'] = ana.shot
                   if self.getvar('posvars') is not None:
                       a = {}; b = {}
-                      exec self.getvar('posvars') in  a, b
+                      exec(self.getvar('posvars'),  a, b)
                       for key in b:
                           ana.result[key] = b[key]
                   filepath = os.path.join(self.owndir(), script_file_name)
@@ -711,14 +711,14 @@ class FigMds(FigGrp):
                       else:
                           se.RunSED(code, viewer.g, ana.result, filepath)
                   else:
-                      exec code in viewer.g, ana.result
+                      exec(code, viewer.g, ana.result)
                except:
                   dprint1('error occured when processing data by script')
                   print('error occured when processing data by following script')
                   print('#####')
                   print(txt)
                   print('#####')
-                  print(traceback.format_exc())
+                  print((traceback.format_exc()))
                   self.change_suppress(True, self.get_child(ishot))
                   return False
 
@@ -897,7 +897,7 @@ class FigMds(FigGrp):
         except Exception:
            logging.basicConfig(level=logging.DEBUG)
            logging.exception('error in post processing')
-           print(ana.result)
+           print((ana.result))
            obj.setvar('x', [0])
            obj.setvar('y', [0])
            obj.setp('use_var', True)
@@ -1146,14 +1146,14 @@ class FigMds(FigGrp):
 
         lc = {'c':current, 'p':prevshot, 'm': -1}
         if self.getvar("posvars") is not None:
-           exec self.getvar("posvars") in {}, lc
+           exec(self.getvar("posvars"), {}, lc)
         if txt.strip() == '': return 0, prevshot
         try:
             val = eval(txt, {}, lc)
         except:
             print('Failed to evaluate shot text')
-            print('shot text', txt)
-            print('name space', lc)
+            print(('shot text', txt))
+            print(('name space', lc))
             #print traceback.format_exc()
             return None, None
         if 0 < val < 1000:
@@ -1220,7 +1220,7 @@ class FigMds(FigGrp):
             opt[mode][1][name] = v
         if 'FigMds' in data:
             val = data['FigMds'][1]
-            for key in val.keys():
+            for key in list(val.keys()):
                  self.setp(key, val[key])
             if len(data['FigMds']) > 2:
                 param = data['FigMds'][2]

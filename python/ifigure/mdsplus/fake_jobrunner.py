@@ -1,6 +1,6 @@
 import sys, socket, shlex, threading, os, binascii, subprocess, time, tempfile
-import SocketServer, traceback
-import cPickle as pickle
+import socketserver, traceback
+import pickle as pickle
 from ifigure.utils.pickled_pipe import PickledPipe
 l = 3000000
 

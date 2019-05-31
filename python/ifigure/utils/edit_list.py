@@ -151,7 +151,7 @@ class FunctionButtons(Panel):
             
 class LabelPanel(Panel):
     def __init__(self, *args, **kargs):
-        if kargs.has_key("setting"):
+        if "setting" in kargs:
            setting = kargs["setting"] 
            del  kargs["setting"] 
         super(LabelPanel, self).__init__(*args,**kargs)
@@ -213,7 +213,7 @@ class LabelPanel2(LabelPanel):
                        "18", "20", "24", "36", "48"]}
 class AxisPositionPanel(Panel):
     def __init__(self, *args, **kargs):
-        if kargs.has_key("setting"):
+        if "setting" in kargs:
            setting = kargs["setting"] 
            del  kargs["setting"] 
         super(AxisPositionPanel, self).__init__(*args,**kargs)
@@ -296,7 +296,7 @@ class AxisPositionPanel(Panel):
         
 class LogLinScale(Panel):
     def __init__(self, *args, **kargs):
-        if kargs.has_key("setting"):
+        if "setting" in kargs:
            setting = kargs["setting"] 
            del  kargs["setting"] 
         super(LogLinScale, self).__init__(*args,**kargs)
@@ -389,7 +389,7 @@ class LogLinScale(Panel):
 
 class AxisRange(wx.Panel):
     def __init__(self, *args, **kargs):
-        if kargs.has_key("setting"):
+        if "setting" in kargs:
            setting = kargs["setting"] 
            del  kargs["setting"] 
         super(AxisRange, self).__init__(*args,**kargs)
@@ -492,7 +492,7 @@ class AxisRange(wx.Panel):
             import numpy as np
             if a != 0:
                si = a/abs(a)
-               ex = long(np.log10(abs(a)))
+               ex = int(np.log10(abs(a)))
                ai = (np.floor(a/(10.**ex)))*10.**ex
 #               if (a/(10.**ex) % 1)== 0. or a < 0:
 
@@ -501,7 +501,7 @@ class AxisRange(wx.Panel):
             else: ai = 0.
             if b != 0:
                si = b/abs(b)
-               ex = long(np.log10(abs(b)))
+               ex = int(np.log10(abs(b)))
                if (b/(10.**ex) % 1) == 0.:
                   bi = (np.floor(b/(10.**ex)))*10.**ex
                else:
@@ -587,7 +587,7 @@ class BitmapButtons(wx.Panel):
 
         import math
 
-        self.gsizer.SetRows(long(math.ceil(len(names)/5.)))
+        self.gsizer.SetRows(int(math.ceil(len(names)/5.)))
         for name, label, fname in zip(names, labels, filenames):
 
             if label  is not None:
@@ -601,7 +601,7 @@ class BitmapButtons(wx.Panel):
                if not os.path.exists(imageFile):
                    imageFile =os.path.join(icondir, 'image', 
                                     'color_'+b64encode('other')+'.png')
-                   print('Cannot find bitmap for ' + ftitle + '=' + fname)
+                   print(('Cannot find bitmap for ' + ftitle + '=' + fname))
                bitmap=wx.Bitmap(imageFile)
                h, w = bitmap.GetSize()
 
@@ -678,7 +678,7 @@ class BitmapButtons(wx.Panel):
 
 class Color(BitmapButtons):
     def _a2n(self, value):
-        value = [long(v*255) for v in value]
+        value = [int(v*255) for v in value]
         return value[3]*256*256*256 + value[2]*256*256 + value[1]*256 + value[0]
         #return 1*256*256*256 + value[2]*256*256 + value[1]*256 + value[0]
     def _n2a(self, value):
@@ -736,7 +736,7 @@ class Color(BitmapButtons):
             val = [0,0,0,0]
         elif isinstance(val, str): 
             val = CC().to_rgba(val)
-        elif isinstance(val, unicode): 
+        elif isinstance(val, str): 
             val = CC().to_rgba(val)
         else:
            if not isinstance(val, str) and len(val) == 3: 
@@ -866,7 +866,7 @@ class ColorSelector(wx.BitmapButton):
         else:
             if isinstance(value, str):
                 bitmap = colorbutton_bitmap(CC().to_rgba(value))
-            elif isinstance(value, unicode):
+            elif isinstance(value, str):
                 bitmap = colorbutton_bitmap(CC().to_rgba(value))               
             else:
                 bitmap = colorbutton_bitmap(value)
@@ -1220,7 +1220,7 @@ class ColorMapNB(wx.Notebook):
 
 class ColorMap(wx.Panel):
     def __init__(self, *args, **kargs):
-        if kargs.has_key("setting"):
+        if "setting" in kargs:
 #           setting = kargs["setting"] 
            del kargs["setting"] 
 #        else: setting = {"reverse": False}
@@ -1550,8 +1550,8 @@ class TextCtrlCopyPaste(wx.TextCtrl):
 
     def GetValue(self):
         punctuation = {
-          ord(u'\u2018'): unicode("'"),
-          ord(u'\u2019'): unicode("'"),
+          ord('\u2018'): str("'"),
+          ord('\u2019'): str("'"),
         }
         try:
             wxval = wx.TextCtrl.GetValue(self)
@@ -1728,7 +1728,7 @@ class Slider(wx.Panel):
         sizer=wx.BoxSizer(wx.HORIZONTAL)
 
         self.t1 = None
-        if setting.has_key("text_box"):
+        if "text_box" in setting:
            if setting["text_box"]==True:
               self.t1=TextCtrlCopyPaste(self, wx.ID_ANY, 
                                     str(setting["val"]), 
@@ -2023,17 +2023,17 @@ class CSliderWithCB(Panel):
         if self._use_float:        
             return self.sl.GetValue()
         else:
-            return long(self.sl.GetValue())
+            return int(self.sl.GetValue())
     def SetValue(self, value):
         if value is None:
            self.sl.SetValue(1.0)
            if self._use_float:
               self.cb.SetValue(str(self.sl._range[1]))
            else:
-              self.cb.SetValue(str(long(self.sl._range[1])))
+              self.cb.SetValue(str(int(self.sl._range[1])))
         else:
            if not self._use_float:
-              v = long(value)
+              v = int(value)
            else:
               v = float(value)
            self.sl.SetValue(v)
@@ -2342,7 +2342,7 @@ class CheckBoxModifiedELP(Panel):
              self.Layout()
 
     def _set_size(self):
-        print(self.elp.GetSize(), self.elp2.GetSize())
+        print((self.elp.GetSize(), self.elp2.GetSize()))
 
 #   self.elp[i]=EditListPanel(nb, [x[0:4] for x in list])
 #   value = DialogEditListTab(tab, l, tip=tip, parent=parent, 
@@ -2627,7 +2627,7 @@ class GenericCoordsTransform(wx.Panel):
                   self.axes, self.axes_sel_mode)
         self.axes_sel_mode = False
         self.set_button_eneable()
-        print('getvalue in generic...' , value)
+        print(('getvalue in generic...' , value))
 
         return value
     def set_button_eneable(self):
@@ -2719,7 +2719,7 @@ class ArrowStylePanel(wx.Panel):
        #print 'switch panel', mode, self.mode
        if self.elp is not None:
           self._elp_values[self.mode] = self.elp.GetValue()
-       if not self.panels.has_key(mode): return False
+       if mode not in self.panels: return False
        if self.mode == mode:
            self.GetParent().Layout()
            #print 'fitting'
@@ -2948,7 +2948,7 @@ class ComboBoxPrefList(ComboBox):
         del kargs['setting']['keyname']
         del kargs['setting']['dialog']
         del kargs['setting']['def_value']
-        if len(kargs['setting'].keys()) == 0: del kargs['setting']
+        if len(list(kargs['setting'].keys())) == 0: del kargs['setting']
         kargs['style'] = wx.CB_DROPDOWN
         kargs['choices'] = ['']
 
@@ -3199,7 +3199,7 @@ class MDSSource0(wx.Panel):
                'default_node': v[1],
                'title': v[2],}
 
-        sigs =  self.pages2data().keys()
+        sigs =  list(self.pages2data().keys())
         for i, name in enumerate(sigs):
             p = self.nb.GetPage(i)
             name = ''.join(name.split('*'))
@@ -3211,7 +3211,7 @@ class MDSSource0(wx.Panel):
     def onPageClose(self, evt):
         ipage = self.nb.GetSelection()
         label  = self.nb.GetPageText(ipage).strip()
-        print label, 'closing'
+        print(label, 'closing')
         if str(label) in ['x', 'y', 'z', 'xerr', 'yerr']:
             ret=dialog.message(self,
                           '"'+label+'"' + " is reserved and cannot be deleted",
@@ -3225,7 +3225,7 @@ class MDSSource0(wx.Panel):
         self.elp.SetValue([value['experiment'],
                            value['default_node'],
                            value['title']])
-        sigs =  value.keys()
+        sigs =  list(value.keys())
         for key in  ['experiment', 'default_node', 'title', 'event', '_flag']:
             if key in sigs: sigs.remove(key)
         for key in sigs:
@@ -3277,7 +3277,7 @@ class MDSSource0(wx.Panel):
             p.SetText(txt)
 #            if not mod: p.SetSavePoint()
         except UnicodeDecodeError:
-            p.SetText(unicode(txt, errors='ignore'))
+            p.SetText(str(txt, errors='ignore'))
 #            if not mod: p.SetSavePoint()
 
     def onHitAlways(self, evt):
@@ -3298,7 +3298,7 @@ class MDSSource0(wx.Panel):
 #            self.Freeze()
             new_name = str(dlg.GetValue())
             data  = self.pages2data()
-            if new_name in  data.keys(): 
+            if new_name in  list(data.keys()): 
                 dlg.Destroy()
                 return
 #            len(data.keys())
@@ -3673,7 +3673,7 @@ class EditListCore(object):
            elif val[2] == 4: 
               if len(val)==4:
                  setting=val[3]
-                 if setting.has_key("style") is False:
+                 if ("style" in setting) is False:
 #                    setting["style"]=wx.CB_DROPDOWN
                     setting["style"]=wx.TE_PROCESS_ENTER
               else:
@@ -3689,7 +3689,7 @@ class EditListCore(object):
                  setting=val[3]
                  if "readonly" in setting:
                      setting["style"] = wx.CB_READONLY if setting["readonly"] else wx.DROPDOWN
-                 if setting.has_key("style") is False:
+                 if ("style" in setting) is False:
                     setting["style"]=wx.TE_PROCESS_ENTER
               else:
                  setting={"style":wx.CB_READONLY,
@@ -4109,7 +4109,7 @@ class EditListCore(object):
                except:
                    import traceback
                    traceback.print_exc()
-                   print("failed to call SetValue" + str(w))                   
+                   print(("failed to call SetValue" + str(w)))                   
                    continue
                if err is False:
                   w.Hide()
@@ -4623,7 +4623,7 @@ class Example(wx.Frame):
         val = dia.ShowModal()
         if val == wx.ID_OK:
            print("YES")
-           print(dia.GetValue())
+           print((dia.GetValue()))
         dia.Destroy()
         self.Close()
 

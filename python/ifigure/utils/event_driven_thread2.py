@@ -1,11 +1,11 @@
-import time, weakref, threading, Queue
+import time, weakref, threading, queue
 
 
 lock = threading.Lock()
 queues = []
 def get_thread(return_queue = None):
     lock.acquire()
-    new_queue = Queue.Queue()
+    new_queue = queue.Queue()
     queues.append(new_queue)
     lock.release()
     return EventDrivenThread(queues[-1], return_queue), new_queue
@@ -70,13 +70,13 @@ class EventDrivenThread(threading.Thread):
 
 #                       print self.events
                time.sleep(0.1)
-           if len(self.events.keys()) == 0: self.flag = False
+           if len(list(self.events.keys())) == 0: self.flag = False
         remove_queue(self.queue)
         send_event(self.finish_event)
         self.queue = None
         self.events = None
         if self.rqueue is not None: self.rqueue.put(self.name) 
         self.rqueue = None
-        print('Exiting...', self.name)
+        print(('Exiting...', self.name))
 
 

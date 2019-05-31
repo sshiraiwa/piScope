@@ -15,7 +15,7 @@
 #*******************************************
 
 import os, wx, time, imp, sys, logging, weakref, shutil, threading
-import cPickle as pickle
+import pickle as pickle
 import ifigure
 import ifigure.utils.cbook as cbook
 import ifigure.widgets.dialog as dialog
@@ -58,7 +58,7 @@ def setSetting(solver, value):
     app = solver.get_app()
     try:
        root = solver.get_root_parent()
-       exec root._name + ' = root'
+       exec(root._name + ' = root')
        if len(value[1].split()) != 0:
          a = eval(value[1])
          if isinstance(a, PyModel):
@@ -281,21 +281,21 @@ class PySolver(PyCode, AbsModuleContainer, AbsScriptContainer):
 
     def init_after_load(self, olist, nlist):
         h2=self.getvar("load_property")
-        if h2.has_key("model"):
+        if "model" in h2:
            oid = h2["model"]
            self._model = self.resolve_olist_nlist_map(oid, olist, nlist)
-        if h2.has_key("sol"):
+        if "sol" in h2:
            oid = h2["sol"]
            self._sol = self.resolve_olist_nlist_map(oid, olist, nlist)
-        if h2.has_key("param"):
+        if "param" in h2:
            oid = h2["param"]
            self._param = self.resolve_olist_nlist_map(oid, olist, nlist)
 
-        if h2.has_key("model_path"):
+        if "model_path" in h2:
            self._model = self.resolve_td_path(h2["model_path"])
-        if h2.has_key("sol_path"):
+        if "sol_path" in h2:
            self._sol = self.resolve_td_path(h2["sol_path"])
-        if h2.has_key("param_path"):
+        if "param_path" in h2:
            self._param =  self.resolve_td_path(h2["param_path"])
 
         self.delvar("load_property")
@@ -629,7 +629,7 @@ class PyParametric(BaseSolver):
         return check
 
     def print_cases(self):
-        print(self._pvalue)
+        print((self._pvalue))
 
     def onRun(self, evt):
         if not self.is_valid_setting(): return

@@ -28,7 +28,7 @@ def calc_xy(xp, yp, mesh=10, mode=1):
     xp1 = np.concatenate(([xp[0], xp[0]],xp,[xp[-1], xp[-1]]))
     yp1 = np.concatenate(([yp[0], yp[0]],yp,[yp[-1], yp[-1]]))
 
-    ks = range(len(xp)+2)
+    ks = list(range(len(xp)+2))
     ts = np.arange((len(xp)+1)*mesh+1)/float(mesh)-1
     xval = np.zeros(len(ts))
     yval = np.zeros(len(ts))
@@ -58,7 +58,7 @@ class FigSpline(FigObj, XUser, YUser):
             obj._sp_interp = 1
             return obj
 
-        if kywds.has_key('src'):
+        if 'src' in kywds:
             obj = FigObj.__new__(cls, *args, **kywds)
             obj = set_hidden_vars(obj)
             return obj
@@ -81,7 +81,7 @@ class FigSpline(FigObj, XUser, YUser):
 
         if v["x"] is None:
            v["x"] = np.arange(v["y"].shape[-1])
-        for name in v.keys(): obj.setvar(name, v[name])
+        for name in list(v.keys()): obj.setvar(name, v[name])
         obj.setvar("kywds", kywds)
         return obj
 
@@ -90,7 +90,7 @@ class FigSpline(FigObj, XUser, YUser):
         YUser.__init__(self)
 
         args = []
-        if not kywds.has_key('src'):
+        if 'src' not in kywds:
             kywds = self.getvar("kywds")
         super(FigSpline,self).__init__(*args, **kywds)
 
@@ -370,7 +370,7 @@ class FigSpline(FigObj, XUser, YUser):
         if self._hit_seg    == -1: return
 
         #_hit_artist = (artist index, mpl event)
-        idx = long(self._hit_seg/self._mesh)
+        idx = int(self._hit_seg/self._mesh)
         x = [p for p in self.getp("x")]
         y = [p for p in self.getp("y")]
         x.insert(idx, self._hit_artist[1].xdata)

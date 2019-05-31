@@ -45,7 +45,7 @@ def make_header(release = 'piscope_release'):
                  if lines[0].startswith('#!'): continue
                  for l in lines:
                      if l.upper().find('COPYRIGHT(C)') != -1: 
-                         print('skipping ', path)
+                         print(('skipping ', path))
                          break
                  else:
 #                     print 'processing ', path
@@ -55,7 +55,7 @@ def make_header(release = 'piscope_release'):
                          fid.write(l)
                      fid.close()
                      c = c + 1
-    print('total ', str(c) + ' files are processed')
+    print(('total ', str(c) + ' files are processed'))
 #            if c > 3: return
 
 def check_print():
@@ -79,7 +79,7 @@ def check_print():
                              if l.find('#') <  l.upper().find('PRINT '): continue
                          print((path, l))
                          c = c + 1
-    print('total ', str(c) + ' PRINT statement detected')
+    print(('total ', str(c) + ' PRINT statement detected'))
 #            if c > 3: return
 
 def make_release(release = 'piscope_release', version = 'beta'):
@@ -129,7 +129,7 @@ def make_release(release = 'piscope_release', version = 'beta'):
                      os.remove(path)
                      continue
                 if f.startswith('.nfs'):
-                     print('removing ', path)
+                     print(('removing ', path))
                      os.remove(path)
                      continue
 

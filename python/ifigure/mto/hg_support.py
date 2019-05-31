@@ -52,7 +52,7 @@ try:
             if has_repo(obj):
                 url, root, path = obj.get_mercurial_url()
                 if url is None: continue 
-                print('checking incoming to ' + str(url))
+                print(('checking incoming to ' + str(url)))
                 try:
                     repo = hgapi.Repo(obj.owndir())
                     l1, l2 = obj.hg_incoming_outgoing_changesets_list(repo, url)
@@ -86,7 +86,7 @@ try:
        broken_repo = []
        for obj in obj0.get_root_parent().walk_tree():
             if has_repo(obj):
-                print('verifing repo at ' + str(obj))
+                print(('verifing repo at ' + str(obj)))
                 os.chdir(obj.owndir())
                 p = subprocess.Popen(shlex.split('hg verify'), 
                                      stdout=subprocess.PIPE, 
@@ -94,7 +94,7 @@ try:
                 aaa = p.stdout.readlines()
                 for a in aaa: 
                     if a.find('damaged') != -1: 
-                       print('broken repo at ' + str(obj))
+                       print(('broken repo at ' + str(obj)))
                        broken_repo.append(obj)
                        break
        os.chdir(cwd)
@@ -217,7 +217,7 @@ try:
            if overwrite:
                parent.get_child(name = name).destroy()
            else:
-               print(parent.get_full_path()+'.'+name + ' already exists.')
+               print((parent.get_full_path()+'.'+name + ' already exists.'))
                obj = parent.get_child(name = name)
                _add_include_exclude(obj)
                return obj
@@ -228,7 +228,7 @@ try:
        try:
           repo2 = repo.hg_clone(url, dpath)
        except:
-          print url, dpath
+          print(url, dpath)
           dialog.showtraceback(parent = app,
                                    txt='Failed to clone subtree from '+url, 
                                    title='Failed to clone',
@@ -358,7 +358,7 @@ try:
                    break
 
            else:  
-               print(isBinary(path), path)
+               print((isBinary(path), path))
                if isBinary(path):
                    if item in include or any(fnmatch(itemb, x) for x in include):    
                        repo.hg_add(path)
@@ -407,7 +407,7 @@ try:
           repo.hg_push(url)
           repo2 = hgapi.Repo(url)
           latest = repo2.revisions(slice(-1,-1))[0].rev
-          repo2.hg_update(long(latest))
+          repo2.hg_update(int(latest))
        os.chdir(ocwd)
 
        #app = wx.GetApp().TopWindow
@@ -590,7 +590,7 @@ try:
                if value[1][2] and not url.startswith('ssh'):
                    repo2 = hgapi.Repo(url)
                    latest = repo2.revisions(slice(-1,-1))[0].rev
-                   repo2.hg_update(long(latest))
+                   repo2.hg_update(int(latest))
            except:
                dialog.showtraceback(parent = app,
                                     txt='Failed to push',
@@ -754,9 +754,9 @@ try:
            b = str(value[1][2])
            if b == '':
               args = (str(a),)
-           elif long(a) != long(b):
+           elif int(a) != int(b):
               args = (str(a), str(b),)
-           elif long(a) == long(b):
+           elif int(a) == int(b):
               args = tuple()
            try:
                res = repo.hg_diff(*args)
@@ -795,7 +795,7 @@ try:
 #                    self._status = '!'
                     return None
 
-           repo.hg_update(long(m))
+           repo.hg_update(int(m))
 
            parent = self.get_parent()
            owndir = self.owndir()
@@ -894,7 +894,7 @@ try:
                #  and gather *.py to make PyScript
                #  I should be handling other files here too?  
                #
-               print vars
+               print(vars)
                td = handle_pure_file_repo(parent, name, owndir)
                td.setvar(vars)
                load_fpath = False
@@ -967,13 +967,13 @@ try:
        def hg_changesets_list(self, repo = None):
            if repo is None: repo = hgapi.Repo(self.owndir())
            lines = repo.hg_log().split('\n')
-           return [long(l.split(':')[1]) for l in lines if l.find('changeset') != -1]
+           return [int(l.split(':')[1]) for l in lines if l.find('changeset') != -1]
 
        def hg_incoming_outgoing_changesets_list(self, repo = None, url='default'):        
            if repo is None: repo = hgapi.Repo(self.owndir())
            try:
                lines1 = repo.hg_command('incoming', url).split('\n')
-               incoming = [long(l.split(':')[1]) for l in lines1 if l.find('changeset') != -1]
+               incoming = [int(l.split(':')[1]) for l in lines1 if l.find('changeset') != -1]
            except:
                import traceback
                if 'no changes found' in traceback.format_exc():
@@ -983,7 +983,7 @@ try:
                    return [], []            
            try:
                lines2 = repo.hg_command('outgoing', url).split('\n')
-               outgoing = [long(l.split(':')[1]) for l in lines2 if l.find('changeset') != -1]
+               outgoing = [int(l.split(':')[1]) for l in lines2 if l.find('changeset') != -1]
            except:
                import traceback
                if 'no changes found' in traceback.format_exc():
@@ -1002,7 +1002,7 @@ try:
                 self.save2(fid)
                 fid.close()
                 return True
-           except IOError, error:
+           except IOError as error:
                 dprint1('Failed to create current tree data')
                 return False
 
@@ -1127,7 +1127,7 @@ try:
            
 except:
    import traceback
-   print(traceback.print_exc())
+   print((traceback.print_exc()))
    has_hg = False
    def has_repo(obj):
        return False

@@ -8,12 +8,12 @@
 #  
 def modifier(worker, names, values):
     print('Running modifier')
-    print('working on model directory ...', worker)
+    print(('working on model directory ...', worker))
     for name, value in zip(names, values):
-       print('appling new parameter...', name, value)
+       print(('appling new parameter...', name, value))
        worker.parameters.setvar(name, value)
 
-import Queue, threading, weakref, wx
+import queue, threading, weakref, wx
 import ifigure.events
 
 solver = obj.get_parent()
@@ -28,7 +28,7 @@ def locate_cost_script():
     else:
         txt = solver._cost
     root = solver.get_root_parent()
-    exec root._name + ' = root'
+    exec(root._name + ' = root')
     return eval(txt)
 
 use_def_merger = solver._use_def_merger
@@ -58,7 +58,7 @@ def run_workers(worker, sol):
         queue.put(w)
         solver._queue = None
 
-    q = Queue.Queue()
+    q = queue.Queue()
     solver._queue = q
     cost_script = locate_cost_script()
 
@@ -81,7 +81,7 @@ def run_workers(worker, sol):
            model = rmodel.resolve_td_path(rpath)
            c = cost_script.RunA(model)
            return c
-        except Queue.Empty:
+        except queue.Empty:
            solver._queue = None
            print('Failed to get response')
            raise ValueError

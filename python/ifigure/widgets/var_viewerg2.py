@@ -73,9 +73,9 @@ class VarViewerGValue(object):
         self._allow_eval = False
 
     def get_varlist(self):
-       return self._var.keys()
+       return list(self._var.keys())
     def hasvar(self, name):
-       return self._var.has_key(name)
+       return name in self._var
     def setvar(self, *args):
        if len(args)==2:
           self._var[args[0]]=args[1]
@@ -133,7 +133,7 @@ class VarViewerGDropTarget(wx.TextDropTarget):
 
     def OnDropText(self, x, y, indata):
         print("drop target")
-        print(type(indata))
+        print((type(indata)))
 
         ### this is ad-hoc....!
         app=self.obj.GetTopLevelParent()
@@ -142,7 +142,7 @@ class VarViewerGDropTarget(wx.TextDropTarget):
 
         data='='+str(indata)
         try:
-          print(str(indata))
+          print((str(indata)))
           obj=EvalNode(str(indata))
           #print obj
           if obj.isTreeDict():
@@ -263,7 +263,7 @@ class VarViewerGPopUp(wx.Menu):
                   obj.setvar(new_name, None)
                   gt.SetTreeDict(obj)
                else:
-                  print("variable "+new_name + " exist!")
+                  print(("variable "+new_name + " exist!"))
         dlg.Destroy()
         
     def onDelete(self, e):
@@ -620,12 +620,12 @@ class VarViewerG(wx.Panel):
         evt.Skip()
         
     def onGridLDClick(self, evt):
-        print 'Grid DClick'        
+        print('Grid DClick')        
         evt.Skip()
         
     def onButton(self, evt, mode):
         from ifigure.ifigure_config import vv_scratch
-        import cPickle as pickle
+        import pickle as pickle
 
         idx = self.grid.GetSelectedRows()
         if len(idx)==0 and mode != 'paste':  return
@@ -847,7 +847,7 @@ class VarViewerG(wx.Panel):
         name = gt.get_row_name(row)
         val=obj.getvar(name)
         txt=str(val)
-        if ((isinstance(val, str) or isinstance(val, unicode)) and
+        if ((isinstance(val, str) or isinstance(val, str)) and
                not val.startswith('=')):
                txt='"'+txt+'"'
 
